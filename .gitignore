@@ -1,6 +1,6 @@
-logs/
-resources/
-.idea/
-cache/
-php/instance/
-ssl/
+/logs/
+/.idea/
+/site/cache/
+/site/php/instance/
+/site/resources/
+/ssl/
