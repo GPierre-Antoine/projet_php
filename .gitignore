@@ -1,0 +1,6 @@
+logs/
+resources/
+.idea/
+cache/
+php/instance/
+ssl/
