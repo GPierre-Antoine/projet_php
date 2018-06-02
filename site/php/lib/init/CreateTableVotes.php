@@ -18,7 +18,7 @@ class CreateTableVotes extends hasWrapper
     {
         echo "Creating Votes", PHP_EOL;
         $request
-            = "CREATE TABLE MEETING_SLOT_VOTE (meeting_slot_id BIGINT UNSIGNED NOT NULL REFERENCES MEETING_SLOTS (meeting_slot_id), name VARCHAR NOT NULL, PRIMARY KEY meeting_slot_vote_pk (meeting_id, name))";
+            = "CREATE TABLE MEETING_SLOT_VOTE (vote_id BIGINT UNSIGNED PRIMARY KEY AUTO_INCREMENT, meeting_slot_id BIGINT UNSIGNED NOT NULL REFERENCES MEETING_SLOTS (meeting_slot_id), name VARCHAR(40) NOT NULL)";
         $stmt = $this->wrapper->prepare($request);
         $stmt->execute();
     }
