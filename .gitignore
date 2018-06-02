@@ -1,6 +1,6 @@
 logs/
 .idea/
 site/cache/
-site/php/instance/*
+secret.php
 site/resources/
 ssl/
