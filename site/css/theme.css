@@ -42,12 +42,13 @@
 {
     background: var(--divider-color);
 }
+
 .border-divider
 {
-    border-left: var(--divider-color) 1px solid;
+    border: var(--divider-color) 1px solid;
 }
 
-.trail
+.theme-accent
 {
     background: var(--accent-color);
 }

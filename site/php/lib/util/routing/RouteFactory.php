@@ -26,7 +26,9 @@ class RouteFactory
 
     public function make($data)
     {
-        $route = new Route($data->url, $data->groups, $data->data);
+        if (!isset($data->accepts))
+            $data->accepts = 'application/json';
+        $route = new Route($data->url, $data->groups, $data->data, $data->title, $data->abstract, $data->accepts, $data->type);
         $route->setHandler($this->handlers[$data->handler]);
 
         return $route;

@@ -42,6 +42,8 @@ class LoginHandler extends GenericPDOHandler
      * @var EncryptionManager
      */
     private $encryptionManager;
+    /** @var User */
+    private $user;
 
 
     public function __construct(
@@ -118,6 +120,14 @@ class LoginHandler extends GenericPDOHandler
 
     public function attemptCacheLogin()
     {
+        if ($this->hasBeenRan()) {
+            if ($this->succeeded()) {
+                return $this->user;
+            }
+
+            return false;
+        }
+        $this->setRan();
         if (!self::checkStoreHasIV()) {
             return false;
         }
@@ -141,6 +151,9 @@ class LoginHandler extends GenericPDOHandler
         if ($contact->getPassword() !== $login_info->getPassword()) {
             return false;
         }
+
+        $this->setSuccess();
+        $this->user = $contact;
 
         return $contact;
     }

@@ -9,13 +9,14 @@
 namespace viewer;
 
 
-use forward\Forwarder;
 use handler\HandlerVisitor;
 
 abstract class Viewer implements HandlerVisitor
 {
-    final public function printContentType(){
+    final public function printContentType()
+    {
         header('Content-Type:'.$this->getContentType());
     }
+
     abstract public function getContentType();
 }

@@ -31,6 +31,12 @@ class RegisterHandler extends GenericPDOHandler
     public function run($login, $password, $firstname, $lastname)
     {
         $this->setRan();
+
+        $stmt = $this->wrapper->run("SELECT COUNT(*) FROM LOGINS WHERE login_value = ?", [$login]);
+        $count = $stmt->fetchColumn();
+        if ($count>0)
+            throw new \RuntimeException("Une erreur est survenue");
+
         $this->wrapper->run("INSERT INTO USERS (user_firstname, user_lastname) VALUES (?,?)", [$firstname, $lastname]);
         $user_id = $this->wrapper->lastInsertID();
 

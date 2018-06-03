@@ -26,3 +26,46 @@ function Vote(id, slot, name) {
     this.slot = slot;
     this.name = name;
 }
+
+
+function Type(id, name) {
+    this.id = id;
+    this.name = name;
+    this.input = undefined;
+}
+
+Type.prototype.makeInput = function (id) {
+};
+Type.prototype.applyDefault = function ($, id) {
+    this.input = $;
+    return $.attr('name', this.id).attr('type', this.kind).attr('id', id).addClass('form-control')
+};
+
+Type.prototype.getFormatedData = function () {
+    return {name: this.id, value: this.input.val()};
+};
+
+
+function ScalarType(id, name, kind) {
+    Type.call(this, id, name);
+    this.kind = kind;
+}
+
+ScalarType.prototype = Object.create(Type.prototype);
+ScalarType.prototype.constructor = ScalarType;
+
+ScalarType.prototype.makeInput = function (id) {
+    return $('<DIV>').addClass('form-group').append($('<LABEL>').text(this.name).attr('for', id), this.applyDefault($('<INPUT>'), id));
+};
+
+function RemoteType(id, name, origin) {
+    Type.call(this, id, name);
+    this.origin = origin;
+}
+
+RemoteType.prototype = Object.create(Type.prototype);
+RemoteType.prototype.constructor = RemoteType;
+
+RemoteType.prototype.makeInput = function (id) {
+    return $('<DIV>').addClass('form-group').append($('<LABEL>').text(this.name).attr('for', id), this.applyDefault($('<SELECT>'), id));
+};

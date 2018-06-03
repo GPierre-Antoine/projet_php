@@ -17,12 +17,20 @@ class Route implements \JsonSerializable
     private $url;
     private $groups;
     private $data;
+    private $title;
+    private $abstract;
+    private $accepts;
+    private $type;
 
-    public function __construct($url, $groups, $data)
+    public function __construct($url, $groups, $data, $title, $abstract, $accepts, $type)
     {
         $this->url = $url;
         $this->groups = $groups;
         $this->data = $data;
+        $this->title = $title;
+        $this->abstract = $abstract;
+        $this->accepts = $accepts;
+        $this->type = $type;
     }
 
     /**
@@ -58,13 +66,31 @@ class Route implements \JsonSerializable
         return in_array($int, $this->groups);
     }
 
-    public function matchUrl($url)
+    public function matchesUrl($url)
     {
         return preg_match("#^{$this->url}$#", $url);
     }
 
+    public function matchesContentType($accept)
+    {
+        return $this->accepts===$accept;
+    }
+
     public function jsonSerialize()
     {
-        return ['url' => $this->url, 'groups' => $this->groups, 'data' => $this->data];
+        return [
+            'title' => $this->title,
+            'abstract' => $this->abstract,
+            'url' => $this->url,
+            'groups' => $this->groups,
+            'data' => $this->data,
+            'type' => $this->type,
+            'accepts' => $this->accepts
+        ];
+    }
+
+    public function getContentType()
+    {
+        return $this->accepts;
     }
 }

@@ -1,128 +1,161 @@
 {
-  "read": {
-    "list_meetings": {
-      "url": "/list_surveys",
-      "groups": [
-        1
-      ],
-      "handler": "fake",
-      "data": []
-    },
-    "check_meeting": {
-      "url": "/check_meeting",
-      "groups": [
-        0
-      ],
-      "handler": "fake",
-      "data": [
-        "meeting"
-      ]
-    },
-    "list_slots": {
-      "url": "/list_slots",
-      "groups": [
-        0
-      ],
-      "handler": "fake",
-      "data": [
-        "meeting"
-      ]
-    },
-    "list_votes": {
-      "url": "/list_votes",
-      "groups": [
-        1
-      ],
-      "handler": "fake",
-      "data": [
-        "meeting"
-      ]
-    },
-    "list_routes": {
-      "url": "/.*",
-      "groups": [
-        0,
-        1
-      ],
-      "handler": "routes",
-      "data": []
-    }
+  "list_meetings": {
+    "title": "List surveys",
+    "abstract": "List my meeting surveys",
+    "url": "/list_surveys",
+    "groups": [
+      1
+    ],
+    "handler": "fake",
+    "data": [],
+    "type": "POST"
   },
-  "write": {
-    "create_meeting": {
-      "url": "/create_metting",
-      "groups": [
-        1
-      ],
-      "handler": "fake",
-      "data": [
-        "meeting",
-        "name"
-      ]
-    },
-    "add_slot_to_survey": {
-      "url": "/add_slot_to_survey",
-      "groups": [
-        1
-      ],
-      "handler": "fake",
-      "data": [
-        "meeting",
-        "date"
-      ]
-    },
-    "validate_survey": {
-      "url": "/validate_survey",
-      "groups": [
-        1
-      ],
-      "handler": "fake",
-      "data": [
-        "meeting"
-      ]
-    },
-    "vote_slot": {
-      "url": "/vote",
-      "groups": [
-        0
-      ],
-      "handler": "fake",
-      "data": [
-        "name",
-        "meeting"
-      ]
-    },
-    "register": {
-      "url": "/register",
-      "groups": [
-        0
-      ],
-      "handler": "register",
-      "data": [
-        "login",
-        "password",
-        "firstname",
-        "lastname"
-      ]
-    },
-    "login": {
-      "url": "/login",
-      "groups": [
-        0
-      ],
-      "handler": "login",
-      "data": [
-        "login",
-        "password"
-      ]
-    },
-    "logout": {
-      "url": "/logout",
-      "groups": [
-        1
-      ],
-      "handler": "logout",
-      "data": []
-    }
+  "check_meeting": {
+    "title": "See Meeting",
+    "abstract": "Check out meeting",
+    "url": "/check_meeting",
+    "groups": [
+      0
+    ],
+    "handler": "fake",
+    "data": [
+      "meeting"
+    ],
+    "type":"POST"
+  },
+  "list_slots": {
+    "title": "List slots",
+    "abstract": "List the available slots for a meeting",
+    "url": "/list_slots",
+    "groups": [
+      0
+    ],
+    "handler": "fake",
+    "data": [
+      "meeting"
+    ],
+    "type": "POST"
+  },
+  "list_votes": {
+    "title": "List votes",
+    "abstract": "Check the votes for a meeting",
+    "url": "/list_votes",
+    "groups": [
+      1
+    ],
+    "handler": "fake",
+    "data": [
+      "meeting"
+    ],
+    "type":"POST"
+  },
+  "list_routes": {
+    "title": "List all routes",
+    "abstract": "See what you can do",
+    "accepts": "text/html",
+    "url": "/.*",
+    "groups": [
+      0,
+      1
+    ],
+    "handler": "routes",
+    "data": [],
+    "type": "POST"
+  },
+  "create_meeting": {
+    "title": "Create a meeting",
+    "abstract": "Organize a new meeting",
+    "url": "/create_metting",
+    "groups": [
+      1
+    ],
+    "handler": "fake",
+    "data": [
+      "meeting",
+      "name"
+    ],
+    "type": "POST"
+  },
+  "add_slot_to_survey": {
+    "title": "Add vote slot to survey",
+    "abstract": "Add a new slot to your meeting survey",
+    "url": "/add_slot_to_survey",
+    "groups": [
+      1
+    ],
+    "handler": "fake",
+    "data": [
+      "meeting",
+      "date"
+    ],
+    "type": "POST"
+  },
+  "validate_survey": {
+    "title": "Validate a survey",
+    "abstract": "Validate a meeting survey",
+    "url": "/validate_survey",
+    "groups": [
+      1
+    ],
+    "handler": "fake",
+    "data": [
+      "meeting"
+    ],
+    "type": "POST"
+  },
+  "vote_slot": {
+    "title": "Vote for a meeting slot",
+    "abstract": "Chose which meeting time fits you the most",
+    "url": "/vote",
+    "groups": [
+      0
+    ],
+    "handler": "fake",
+    "data": [
+      "name",
+      "meeting"
+    ],
+    "type": "POST"
+  },
+  "register": {
+    "title": "Register",
+    "abstract": "Sign-up to localhost.com",
+    "url": "/register",
+    "groups": [
+      0
+    ],
+    "handler": "register",
+    "data": [
+      "login",
+      "password",
+      "firstname",
+      "lastname"
+    ],
+    "type": "POST"
+  },
+  "login": {
+    "title": "Log in",
+    "abstract": "Sign-in into localhost.com",
+    "url": "/login",
+    "groups": [
+      0
+    ],
+    "handler": "login",
+    "data": [
+      "login",
+      "password"
+    ],
+    "type": "POST"
+  },
+  "logout": {
+    "title": "Log out",
+    "abstract": "Close the session",
+    "url": "/logout",
+    "groups": [
+      1
+    ],
+    "handler": "logout",
+    "data": [],
+    "type": "POST"
   }
 }

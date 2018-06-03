@@ -3,16 +3,19 @@
 
 function AbstractMessage() {
 }
+
 AbstractMessage.prototype.accept = function (messageVisitor) {
 };
 
 function AbstractLogger() {
 }
+
 AbstractLogger.prototype.log = function (message) {
 };
 
 function AbstractMessageVisitor() {
 }
+
 AbstractMessageVisitor.prototype.visitSimple = function (Message) {
 };
 AbstractMessageVisitor.prototype.visitException = function (Exception) {
@@ -24,13 +27,18 @@ function SimpleMessage(message, options) {
     this.message = message;
     this.type = options.type;
 }
+
 SimpleMessage.prototype = Object.create(AbstractMessage.prototype);
 SimpleMessage.prototype.constructor = SimpleMessage;
 SimpleMessage.prototype.getMessage = function () {
     return this.message;
 };
-SimpleMessage.prototype.accept = function (messageVisitor) {messageVisitor.visitSimple(this);};
-SimpleMessage.prototype.getType = function () {return this.type;};
+SimpleMessage.prototype.accept = function (messageVisitor) {
+    messageVisitor.visitSimple(this);
+};
+SimpleMessage.prototype.getType = function () {
+    return this.type;
+};
 
 function ExceptionMessage(message, code, file, line, stacktrace, column) {
     AbstractMessage.call(this);
@@ -40,6 +48,7 @@ function ExceptionMessage(message, code, file, line, stacktrace, column) {
     this.stack = stacktrace;
     this.column = column;
 }
+
 ExceptionMessage.prototype = Object.create(AbstractMessage.prototype);
 ExceptionMessage.prototype.constructor = ExceptionMessage;
 ExceptionMessage.prototype.getMessage = function () {
@@ -70,6 +79,7 @@ ExceptionMessage.prototype.fromError = function (error) {
 function ExceptionMessageLogger(fragment) {
     this.fragment = fragment;
 }
+
 function SimpleMessageLogger(fragment, options) {
     this.fragment = fragment;
     this.options = options || {};
@@ -89,6 +99,7 @@ function LogDispatcher(fragment, options) {
     this.exceptionLogger = new ExceptionMessageLogger(fragment, options);
     this.simpleMessageLogger = new SimpleMessageLogger(fragment, options);
 }
+
 LogDispatcher.prototype = Object.create(AbstractMessageVisitor.prototype);
 LogDispatcher.prototype.constructor = LogDispatcher;
 
@@ -125,10 +136,7 @@ ExceptionMessageLogger.prototype.log = function (ex) {
     let summary = $('<SUMMARY>')
         .append($('<EM>')
             .addClass('closed')
-            .text('Afficher plus ...'))
-        .append($('<EM>')
-            .addClass('opened')
-            .text('Cacher ... '));
+            .text('Afficher plus ...'));
 
     let inner_div = $('<DIV>');
     let details = $('<DETAILS>')
@@ -223,17 +231,18 @@ ExceptionMessageLogger.prototype.log = function (ex) {
 SimpleMessageLogger.prototype.log = function (ex) {
     let self = this;
     let type = ex.getType();
-    if (typeof type === "undefined")
-    {
+    if (typeof type === "undefined") {
         type = this.options.default_theme;
     }
     let alert = $('<DIV>').addClass('alert alert-' + type);
+
     function erase() {
         alert.remove();
         if (timer) {
             clearTimeout(timer);
         }
     }
+
     let timer = 0;
     let button = $('<BUTTON>')
         .addClass('pull-right close theme-icons')

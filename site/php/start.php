@@ -89,22 +89,24 @@ function get_forwarder($request_type)
 }
 
 /**
+ * @param LoginHandler $handler
+ *
  * @return Collection|Viewer[]
  */
-function init_views()
+function init_views(LoginHandler $handler)
 {
     $views = new Collection();
-    $views['javascript'] = new JavascriptViewer();
+    $views['javascript'] = new JavascriptViewer($handler);
     $views['json'] = new JsonViewer();
 
     return $views;
 }
 
 /**
- * @param DbWrapper          $db
- * @param CacheIoManager     $cache
- * @param ClientStore        $store
- * @param EncryptionManager  $encryptionManager
+ * @param DbWrapper         $db
+ * @param CacheIoManager    $cache
+ * @param ClientStore       $store
+ * @param EncryptionManager $encryptionManager
  *
  * @return Collection|Handler[]
  */
@@ -131,28 +133,33 @@ function init_handlers(
 function get_routes($db, $store, $cache, $encryptionManager)
 {
     $login_handler = new LoginHandler($db, $store, $cache, $encryptionManager);
-    $result = $login_handler->attemptCacheLogin();
-    $routes = json_decode(file_get_contents(__DIR__.'/../json/routes.json'));
 
 
     $handlers = init_handlers($db, $cache, $store, $encryptionManager);
     $handlers[] = $login_handler;
 
-
     $make_function = [new RouteFactory($handlers), 'make'];
 
+    $routes = json_decode(file_get_contents(__DIR__.'/../json/routes.json'));
+
     /** @var Collection|Route[] $collection */
-    $collection = new Collection(array_map($make_function, array_merge((array) $routes->read, (array) $routes->write)));
+    $collection = new Collection(array_map($make_function, (array)$routes));
 
-    $group = $result !== false;
+    $result = $login_handler->attemptCacheLogin();
+    $group = resolve_group($result);
 
-    $handlers['routes']->setRoutes($collection);
-
-    return $collection->filter(function (Route $item) use ($group) {
+    $filtererd_collection = $collection->filter(function (Route $item) use ($group) {
         return $item->hasGroup($group);
     });
 
+    $handlers['routes']->setRoutes($collection);
 
+    return $filtererd_collection;
+}
+
+function resolve_group($output)
+{
+    return $output === false ? 0 : 1;
 }
 
 function application_meetings(
@@ -169,16 +176,21 @@ function application_meetings(
         $routes = get_routes($db, $store, $cache, $encryptionManager);
         $uri = $_SERVER['REQUEST_URI'];
 
-        $filter = function (Route $item) use ($uri) {
-            return $item->matchUrl($uri) > 0;
+        if (empty($_SERVER['HTTP_ACCEPT'])) {
+            $accept = 'text/html';
+        } else {
+            $accept = explode(',', explode(';', $_SERVER['HTTP_ACCEPT'])[0])[0];
+        }
+
+        $filter = function (Route $item) use ($uri, $accept) {
+            return $item->matchesUrl($uri) && $item->matchesContentType($accept);
         };
-
-
         $right_handler = $routes->filter($filter);
 
         if (!count($right_handler)) {
             throw new RuntimeException("Unknown route : ".$uri);
         }
+
         if (count($right_handler) > 1) {
             throw new RuntimeException("Ambiguous route : ".$uri);
         }
@@ -189,12 +201,8 @@ function application_meetings(
         $forwarder = get_forwarder($_SERVER['REQUEST_METHOD']);
 
 
-        $viewers = init_views();
-        if (empty($_SERVER['HTTP_ACCEPT'])) {
-            $accept = 'text/html';
-        } else {
-            $accept = explode(',', explode(';', $_SERVER['HTTP_ACCEPT'])[0])[0];
-        }
+        $viewers = init_views($routes['login']->getHandler());
+
         $adequate_viewers = $viewers->filter(function (Viewer $v) use ($accept) {
             return $v->getContentType() === $accept;
         });
@@ -217,7 +225,8 @@ function application_meetings(
                         $settings->getDbUser(), $settings->getDbPassword());
                     break;
                 default:
-                    echo $e->getMessage(), PHP_EOL, $e->getCode(), PHP_EOL, $e->getTraceAsString();
+                    http_response_code($e->getCode() || 500);
+                    echo $e->getMessage();
                     break;
             }
             exit;

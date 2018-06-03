@@ -1,65 +1,109 @@
 .flo {
     display: flex;
 }
+
 .flo > * {
     flex-shrink: 1;
     flex-grow: 1;
     flex-basis: auto;
 }
+
 .flo-row {
     flex-direction: row;
 }
+
 .flo-col {
     flex-direction: column;
 }
+
 .flo-noshrink > * {
     flex-shrink: 0;
 }
+
 .flo-nogrow > * {
     flex-grow: 0;
 }
+
+.fli {
+    flex: 1
+}
+
 .fli-no {
     flex: 0;
 }
+
 .fli-nogrow {
     flex-grow: 0;
 }
+
+.fli-grow {
+    flex-grow: 1;
+}
+
 .fli-noshrink {
     flex-grow: 0;
 }
+
 .min-height {
     min-height: 90vh;
 }
+
 .word-wrap {
     word-wrap: break-word;
 }
+
 .fold-text-input[type=text] {
     padding-right: 20px;
 }
+
 .hidden {
     visibility: hidden;
 }
+
 .remove {
     display: none;
 }
+
 .line-height {
     line-height: 1.6em;
 }
+
 .block {
     display: block;
 }
+
 .nopadding-right {
     padding-right: 0;
 }
+
 .nopadding-left {
     padding-left: 0;
 }
+
 .nopadding {
     padding-right: 0;
     padding-left: 0;
     margin-bottom: 0;
 }
-body{
+
+body {
     height: 100vh;
-    width:100vw;
+    width: 100vw;
+}
+
+.overflow-scroll {
+    overflow-x: scroll;
+}
+
+.fixed-height {
+    height: 30vh;
+}
+
+.tag {
+    margin:5px;
+}
+
+.clickable
+{
+    cursor:pointer;
 }

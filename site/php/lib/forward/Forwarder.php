@@ -42,7 +42,7 @@ class Forwarder implements HandlerVisitor
     {
         foreach ($string as $value) {
             if (!$this->hasKey($value)) {
-                throw new \RuntimeException("Missing argument : ", $string);
+                throw new \RuntimeException("Missing argument : " . $value);
             }
         }
     }

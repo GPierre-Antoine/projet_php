@@ -1,10 +1,42 @@
 {
-  "meeting": "number",
-  "firstname": "text",
-  "lastname": "text",
-  "password": "password",
-  "login": "text",
-  "date": "date",
-  "name": "text",
-  "slot": "number"
+  "meeting": {
+    "name": "meeting",
+    "type": "remote",
+    "origin": "list_meetings"
+  },
+  "firstname": {
+    "name": "prénom",
+    "type": "scalar",
+    "kind": "text"
+  },
+  "lastname": {
+    "name": "nom de famille",
+    "type": "scalar",
+    "kind": "text"
+  },
+  "password": {
+    "name": "Mot de passe",
+    "type": "scalar",
+    "kind": "password"
+  },
+  "login": {
+    "name": "Login",
+    "type": "scalar",
+    "kind": "text"
+  },
+  "date": {
+    "name": "date",
+    "type": "scalar",
+    "kind": "date"
+  },
+  "name": {
+    "name": "nom",
+    "type": "scalar",
+    "kind": "text"
+  },
+  "slot": {
+    "name": "slot",
+    "type": "remote",
+    "origin": "list_slots"
+  }
 }

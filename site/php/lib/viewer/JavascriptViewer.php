@@ -23,6 +23,15 @@ use util\version\LinuxVersionResolver;
 
 class JavascriptViewer extends Viewer
 {
+    /**
+     * @var LoginHandler
+     */
+    private $loginHandler;
+
+    public function __construct(LoginHandler $loginHandler)
+    {
+        $this->loginHandler = $loginHandler;
+    }
 
     public function visitLogin(LoginHandler $handler)
     {
@@ -51,12 +60,14 @@ class JavascriptViewer extends Viewer
 
     public function visitRouteHandler(RouteHandler $handler)
     {
-        $json = json_encode($handler->getRoutes());
-        echo $this->page(new EmulatedBase("<script type='application/javascript'>let app = new MeetingApp(); app.start($json)</script>"));
+        $json = json_encode($handler->getRoutes(),JSON_PRETTY_PRINT);
+        $types = file_get_contents(__DIR__.'/../../../json/types.json');
+        $group = resolve_group($this->loginHandler->attemptCacheLogin());
+        echo $this->makePage(new EmulatedBase("<script type='application/javascript'>let app = new MeetingApp(); app.start({routes:$json,group:$group,types:$types})</script>"));
 
     }
 
-    public function page(Base ... $bases)
+    public function makePage(Base ... $bases)
     {
 
         return new MultiLeaf(
@@ -77,14 +88,17 @@ class JavascriptViewer extends Viewer
         $head->append($htmlMaker->vendor());
 
         $head->append($htmlMaker->resolve(
+            css_dir.'/bs_overwrite.css',
             js_dir.'/objects.js',
             js_dir.'/factories.js',
             js_dir.'/model.js',
             js_dir.'/log.js',
+            js_dir.'/routes.js',
+            js_dir.'/activities.js',
             js_dir.'/starters.js',
             css_dir.'/alerts.css',
             css_dir.'/basic.css',
-            css_dir.'/bs_overwrite.css',
+
             css_dir.'/theme.css'
         ));
 
