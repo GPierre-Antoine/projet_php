@@ -15,15 +15,26 @@ class Meeting implements \JsonSerializable
     private $user;
     private $name;
 
+    private $slots;
+
     public function __construct($id, $user, $name)
     {
         $this->id = $id;
         $this->user = $user;
         $this->name = $name;
+        $this->slots = [];
+    }
+
+    /**
+     * @param mixed $slot
+     */
+    public function addSlot(Slot $slot)
+    {
+        $this->slots[] = $slot;
     }
 
     public function jsonSerialize()
     {
-        return ['id'=>$this->id, 'name'=>$this->name, 'user'=>$this->user];
+        return ['id' => $this->id, 'name' => $this->name, 'user' => $this->user, 'slots' => $this->slots];
     }
 }

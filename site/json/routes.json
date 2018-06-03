@@ -44,10 +44,8 @@
       1
     ],
     "handler": "check_meeting_full",
-    "data": [
-      "meeting"
-    ],
-    "type": "POST"
+    "data": ["meeting"],
+    "type": "GET"
   },
   "list_routes": {
     "title": "List all routes",

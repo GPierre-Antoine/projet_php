@@ -84,6 +84,7 @@ class Routeur
         $handlers[] = new VoteHandler($this->db);
         $handlers[] = new AddSlotHandler($this->db);
         $handlers[] = new ListSlotHandler($this->db);
+        $handlers[] = new ($this->db);
         $handlers[] = new RegisterHandler($this->db);
         $handlers[] = new ListMeetingHandler($this->db);
         $handlers[] = new CheckMeetingHandler($this->db);

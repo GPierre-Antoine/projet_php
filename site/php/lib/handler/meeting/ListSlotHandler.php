@@ -17,8 +17,17 @@ class ListSlotHandler extends GenericPDOHandler
 {
     use DefaultRanAndSucceed;
 
+    const MEETING = "meeting";
+
     public function accept(HandlerVisitor $visitor)
     {
         $visitor->visitListSlotHandler($this);
+    }
+
+    public function run($meeting)
+    {
+        $this->setRan();
+        $this->wrapper->run("SELECT", [$meeting]);
+        $this->setSuccess();
     }
 }

@@ -11,7 +11,9 @@ namespace forward;
 use container\Collection;
 use handler\connexion\LoginHandler;
 use handler\FakeHandler;
+use handler\meeting\CheckMeetingVotesHandler;
 use handler\meeting\ListMeetingHandler;
+use handler\meeting\ListSlotHandler;
 use handler\meta\RouteHandler;
 
 class GetForwarder extends Forwarder
@@ -37,5 +39,19 @@ class GetForwarder extends Forwarder
     public function visitListMeeting(ListMeetingHandler $handler)
     {
         $handler->run($this->loginHandler->getUser());
+    }
+
+    public function visitListSlotHandler(ListSlotHandler $handler)
+    {
+        $this->assertHasKey(ListSlotHandler::MEETING);
+        $meeting = $this->secureGet(ListSlotHandler::MEETING);
+        $handler->run($meeting);
+    }
+
+    public function visitCheckMeetingVotesHandler(CheckMeetingVotesHandler $handler)
+    {
+        $this->assertHasKey(ListSlotHandler::MEETING);
+        $meeting = $this->secureGet(ListSlotHandler::MEETING);
+        $handler->run($meeting, $this->loginHandler->getUser());
     }
 }

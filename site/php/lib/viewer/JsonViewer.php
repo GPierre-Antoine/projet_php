@@ -15,6 +15,7 @@ use handler\connexion\RegisterHandler;
 use handler\FakeHandler;
 use handler\Handler;
 use handler\meeting\AddSlotHandler;
+use handler\meeting\CheckMeetingVotesHandler;
 use handler\meeting\CreateMeetingHandler;
 use handler\meeting\DeleteMeetingHandler;
 use handler\meeting\ListMeetingHandler;
@@ -81,5 +82,10 @@ class JsonViewer extends Viewer
         $this->viewBinaryHandler($handler);
     }
 
+
+    public function visitCheckMeetingVotesHandler(CheckMeetingVotesHandler $handler)
+    {
+        echo json_encode(new Feedback($handler->succeeded(),$handler->getMeeting()));
+    }
 
 }
