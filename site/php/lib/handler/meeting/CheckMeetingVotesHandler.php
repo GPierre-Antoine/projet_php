@@ -32,31 +32,33 @@ class CheckMeetingVotesHandler extends GenericPDOHandler
     public function run($meeting, User $user)
     {
         $this->setRan();
+        $uid = $user->getId();
         $stmt
             = $this->wrapper->run("SELECT * FROM MEETINGS NATURAL JOIN MEETING_SLOTS WHERE meeting_id = ? and user_id = ?",
-            [$meeting, $user->getId()]);
+            [$meeting, $uid]);
 
         /** @var Slot[]|Collection $slots */
-        $slots = $stmt->useAutoHashMap(function ($data) {
+        $data = $stmt->useAutoHashMap(function ($data) {
             return $data->meeting_slot_id;
-        })->fetchAll(function ($data) {
-            return new Slot($data->meeting_slot_id, new \DateTime($data->meeting_slot->time),
+        })->fetchAll();
+        $slots = $data->map(function ($data) {
+            return new Slot($data->meeting_slot_id, new \DateTime($data->meeting_slot_time),
                 new \DateInterval($data->meeting_slot_interval));
         });
         if (!count($slots)) {
-            return;
+            throw new \RuntimeException('Unknown Meeting');
         }
-        $data = $stmt->fetch();
-        $meeting = new Meeting($data->meeting_id, $user, $data->meeting_name);
+        $mdata = $data->first();
+        $meeting = new Meeting($mdata->meeting_id, $user, $mdata->meeting_name);
 
         foreach ($slots as $slot) {
             $meeting->addSlot($slot);
         }
 
         $stmt = $this->wrapper->run("SELECT MEETING_SLOT_VOTE.* FROM MEETING_SLOTS JOIN MEETING_SLOT_VOTE ON MEETING_SLOTS.meeting_slot_id = MEETING_SLOT_VOTE.meeting_slot_id
-WHERE meeting_id = ?", [$meeting]);
+WHERE meeting_id = ?", [$meeting->getId()]);
 
-        $stmt->fetchAll(function ($data) use ($slots) {
+        $stmt->fetchAll()->map(function ($data) use ($slots) {
             $vote = new Vote($data->vote_id, $data->name);
             $slots[$data->meeting_slot_id]->addVotes($vote);
         });

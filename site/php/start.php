@@ -125,7 +125,7 @@ function application_meetings(
         }
 
         $filter = function (Route $item) use ($uri, $accept) {
-            return $item->matchesUrl($uri) && $item->matchesContentType($accept);
+            return $item->matchesUrl(explode('?', $uri)[0]) && $item->matchesContentType($accept);
         };
         $right_handler = $routes->filter($filter);
 

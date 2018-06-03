@@ -76,6 +76,14 @@ class Route implements \JsonSerializable
         return $this->accepts===$accept;
     }
 
+    /**
+     * @return mixed
+     */
+    public function getTitle()
+    {
+        return $this->title;
+    }
+
     public function jsonSerialize()
     {
         return [
@@ -92,5 +100,10 @@ class Route implements \JsonSerializable
     public function getContentType()
     {
         return $this->accepts;
+    }
+
+    public function getUrl()
+    {
+        return $this->url;
     }
 }

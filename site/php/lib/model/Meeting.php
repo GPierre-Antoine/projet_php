@@ -37,4 +37,12 @@ class Meeting implements \JsonSerializable
     {
         return ['id' => $this->id, 'name' => $this->name, 'user' => $this->user, 'slots' => $this->slots];
     }
+
+    /**
+     * @return mixed
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
 }
