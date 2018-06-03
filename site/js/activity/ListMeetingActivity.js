@@ -18,7 +18,7 @@ ListMeetingActivity.prototype.getTitle = function () {
 
 ListMeetingActivity.prototype.print = function () {
     let self = this;
-    let printer = new MeetingPrinter();
+    let printer = new MeetingPrinter(this.logger, this.eventthread, this.list_vote, this.delete_meeting);
     let location = self.location;
     this.location.append($('<H1>').text('Liste des sondages').addClass('primary'));
     this.logger.log(new SimpleMessage('Mise à jour de la liste des sondages ...'));

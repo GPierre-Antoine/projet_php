@@ -16,6 +16,7 @@ use handler\FakeHandler;
 use handler\Handler;
 use handler\meeting\AddSlotHandler;
 use handler\meeting\CreateMeetingHandler;
+use handler\meeting\DeleteMeetingHandler;
 use handler\meeting\ListMeetingHandler;
 use handler\meta\RouteHandler;
 use util\info\Feedback;
@@ -73,6 +74,11 @@ class JsonViewer extends Viewer
     public function visitListMeeting(ListMeetingHandler $handler)
     {
         echo json_encode(new Feedback($handler->succeeded(), $handler->getMeetings()));
+    }
+
+    public function visitDeleteMeetingHandler(DeleteMeetingHandler $handler)
+    {
+        $this->viewBinaryHandler($handler);
     }
 
 

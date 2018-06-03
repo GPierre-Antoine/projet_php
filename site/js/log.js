@@ -27,6 +27,7 @@ function SimpleMessage(message, options) {
     this.message = message;
     this.type = options.type;
     this.html = options.html;
+    this.timeout = options.timeout;
 }
 
 SimpleMessage.prototype = Object.create(AbstractMessage.prototype);
@@ -247,11 +248,10 @@ SimpleMessageLogger.prototype.log = function (ex) {
 
     let message;
 
-    if (typeof ex.html !== "undefined" && ex.html ===true){
+    if (typeof ex.html !== "undefined" && ex.html === true) {
         message = $('<SPAN>').html(ex.getMessage());
     }
-    else
-    {
+    else {
         message = $('<SPAN>').text(ex.getMessage());
     }
 
@@ -268,7 +268,10 @@ SimpleMessageLogger.prototype.log = function (ex) {
     alert
         .append(button)
         .append(text);
-    if (!this.options.notimeout) {
+    if (typeof ex.timeout !== "undefined") {
+        setTimeout(erase, ex.timeout);
+    }
+    else if (!this.options.notimeout) {
         alert.on('mouseout', function () {
             if (timer) {
                 clearTimeout(timer);

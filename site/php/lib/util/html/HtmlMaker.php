@@ -25,7 +25,8 @@ class HtmlMaker
     {
         return new MultiLeaf(
             $this->jQueryV3(),
-            $this->bootStrapV4()
+            $this->bootStrapV4(),
+            $this->fontAwesome5()
         );
     }
 
@@ -87,6 +88,18 @@ class HtmlMaker
         $css->type = "text/css";
 
         return $css;
+    }
+
+    public function fontAwesome4() : Base
+    {
+        return $this->remoteCss('https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css',
+            'sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN', 'anonymous');
+    }
+
+    public function fontAwesome5() : Base
+    {
+        return $this->remoteCss('https://use.fontawesome.com/releases/v5.0.13/css/all.css',
+            'sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp', 'anonymous');
     }
 
     public function smartJs($file) : Base

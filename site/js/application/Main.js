@@ -7,6 +7,8 @@ function Main() {
     let body_width = 'col-10';
     let trail_width = 'col-2';
 
+    let bottom_layer;
+
     let fragment = [
         $('<header>').addClass('col-12 fli-nogrow fli-noshrink header flo flo-col').append(
             $('<DIV>').addClass('row').append(
@@ -15,10 +17,10 @@ function Main() {
             )
         ),
         $('<section>').addClass('col-12 flo flo-row').append(
-            this.section = $('<DIV>').addClass(body_width + ' scrolly'),
-            alerts = $('<div>').addClass(trail_width + ' theme-divider scrolly')
+            this.section = $('<DIV>').addClass(body_width + ' scrolly '),
+            alerts = $('<div>').addClass(trail_width + ' theme-divider scrolly ')
         ),
-        $('<footer>').addClass('col-12 fli-nogrow fli-noshrink footer').append(
+        bottom_layer = $('<footer>').addClass('col-12 fli-nogrow fli-noshrink footer').append(
             $('<DIV>').addClass('row').append(
                 this.footer = $('<DIV>').addClass(body_width + ' row'),
                 $('<SPAN>').addClass(trail_width).text('Développé par Pierre-Antoine GUILLAUME')
@@ -28,10 +30,14 @@ function Main() {
     body.append(fragment).addClass('flo flo-col');
     let self = this;
     let fix_height = function () {
+        let level = (bottom_layer.outerHeight() - 5)+'px';
+        self.section.css('margin-bottom', level);
+        alerts.css('margin-bottom', level);
         self.section.height('auto');
         self.section.height(self.section.height());
         alerts.height('auto');
         alerts.height(alerts.height());
+
     };
 
     fix_height();
