@@ -6,12 +6,11 @@
  * Time: 13:13
  */
 
-namespace util;
+namespace util\client;
 
 
 use container\Collection;
 use container\CollectionForwarder;
-use util\client\ClientStore;
 
 class SessionManager extends CollectionForwarder implements ClientStore
 {
@@ -29,7 +28,7 @@ class SessionManager extends CollectionForwarder implements ClientStore
      * @param $secure
      * @param $duration
      */
-    public function __construct($path, $secure, $duration)
+    public function __construct($path = '/', $secure = true, $duration = 3600)
     {
         parent::__construct([]);
         $this->path = $path;

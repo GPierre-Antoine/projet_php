@@ -11,5 +11,6 @@ namespace util\client;
 
 interface ClientStore extends \ArrayAccess
 {
-
+    public function start();
+    public function destroy();
 }

@@ -10,6 +10,7 @@ namespace forward;
 
 use container\Collection;
 use handler\connexion\LoginHandler;
+use handler\connexion\LogoutHandler;
 use handler\connexion\RegisterHandler;
 
 class PostForwarder extends Forwarder
@@ -39,5 +40,10 @@ class PostForwarder extends Forwarder
         $password = $this->unsecureGet(RegisterHandler::PASSWORD);
 
         $handler->run($login, $password, $firstname, $lastname);
+    }
+
+    public function visitLogout(LogoutHandler $handler)
+    {
+        $handler->run();
     }
 }

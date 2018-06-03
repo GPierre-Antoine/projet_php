@@ -6,11 +6,10 @@
  * Time: 16:09
  */
 
-namespace util;
+namespace util\client;
 
 
 use container\CollectionForwarder;
-use util\client\ClientStore;
 
 class CookieManager extends CollectionForwarder implements ClientStore
 {
@@ -47,7 +46,26 @@ class CookieManager extends CollectionForwarder implements ClientStore
     public function deleteCookie($offset)
     {
         $offset = self::quickHash($offset);
+        $this->deleteCookieRaw($offset);
+    }
+
+
+    private function deleteCookieRaw($offset)
+    {
         setcookie($offset, '', time() - 3600);
         $this->collection->offsetUnset($offset);
+    }
+
+
+    public function destroy()
+    {
+        $names = $this->collection->keys();
+        foreach ($names as $cookie) {
+            $this->deleteCookieRaw($cookie);
+        }
+    }
+
+    public function start()
+    {
     }
 }

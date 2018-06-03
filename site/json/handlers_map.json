@@ -1,0 +1,7 @@
+{
+  "FakeHandler": "fake",
+  "LoginHandler": "login",
+  "LogoutHandler": "logout",
+  "RegisterHandler": "register",
+  "RouteHandler": "routes"
+}

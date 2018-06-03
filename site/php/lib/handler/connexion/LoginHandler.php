@@ -9,9 +9,9 @@
 namespace handler\connexion;
 
 
+use handler\DefaultRanAndSucceed;
 use handler\GenericPDOHandler;
 use handler\HandlerVisitor;
-use model\Contact;
 use model\LoginInfo;
 use model\User;
 use util\cache\CacheIoManager;
@@ -21,6 +21,7 @@ use util\encryption\EncryptionManager;
 
 class LoginHandler extends GenericPDOHandler
 {
+    use DefaultRanAndSucceed;
 
     const LOGIN = "login";
     const PASSWORD = "password";
@@ -63,6 +64,7 @@ class LoginHandler extends GenericPDOHandler
      */
     public function run($login, $password)
     {
+        $this->setRan();
         $contact = $this->fetchData($login);
         if (!$contact) {
             throw new \RuntimeException(self::MESSAGE_NO_LOGIN);
@@ -71,7 +73,8 @@ class LoginHandler extends GenericPDOHandler
             throw new \RuntimeException(self::MESSAGE_BAD_CONNEXION);
         }
         self::giveIVToStore();
-        $this->cacheContact($contact);
+        $this->pushUserToCache($contact);
+        $this->setSuccess();
     }
 
     public function fetchData($login)
@@ -87,8 +90,8 @@ class LoginHandler extends GenericPDOHandler
             return false;
         }
         $value = $collection->first();
-        $contact = new Contact(new User($value->user_id, $value->user_lastname,
-            $value->user_firstname), new LoginInfo($value->login_value, $value->password_hash));
+        $contact = new User($value->user_id, $value->user_lastname,
+            $value->user_firstname, $value->login_value, $value->password_hash);
 
         return $contact;
     }
@@ -103,12 +106,12 @@ class LoginHandler extends GenericPDOHandler
         $this->clientStore[EncryptionManager::IV_NAME] = $iv;
     }
 
-    public function cacheContact(Contact $contact)
+    public function pushUserToCache(User $contact)
     {
         $this->cacheIoManager[$contact->getLogin()] = serialize($contact);
     }
 
-    public function assignToStore(LoginInfo $info)
+    public function pushInfoToStore(LoginInfo $info)
     {
         $this->clientStore[self::LOGIN_INFO] = $this->encryptionManager->encrypt(serialize($info));
     }
@@ -123,16 +126,16 @@ class LoginHandler extends GenericPDOHandler
         }
         self::giveIVToEncrypter();
 
-        $login_info = self::retrieveFromStore();
+        $login_info = self::getInfoFromStore();
 
         if (!self::checkCacheHasInfo($login_info->getLogin())) {
             $contact = $this->fetchData($login_info->getLogin());
             if (!$contact) {
                 return false;
             }
-            $this->cacheContact($contact);
+            $this->pushUserToCache($contact);
         } else {
-            $contact = self::retrieveFromCache($login_info->getLogin());
+            $contact = self::getUserFromCache($login_info->getLogin());
         }
 
         if ($contact->getPassword() !== $login_info->getPassword()) {
@@ -157,7 +160,7 @@ class LoginHandler extends GenericPDOHandler
         $this->encryptionManager->setIv($this->clientStore[EncryptionManager::IV_NAME]);
     }
 
-    public function retrieveFromStore() : LoginInfo
+    public function getInfoFromStore() : LoginInfo
     {
         return unserialize($this->encryptionManager->decrypt($this->clientStore[self::LOGIN_INFO]));
     }
@@ -167,7 +170,7 @@ class LoginHandler extends GenericPDOHandler
         return isset($this->cacheIoManager[$login]);
     }
 
-    public function retrieveFromCache($login) : Contact
+    public function getUserFromCache($login) : User
     {
         return unserialize($this->cacheIoManager[$login]);
     }

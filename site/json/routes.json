@@ -1,0 +1,128 @@
+{
+  "read": {
+    "list_meetings": {
+      "url": "/list_surveys",
+      "groups": [
+        1
+      ],
+      "handler": "fake",
+      "data": []
+    },
+    "check_meeting": {
+      "url": "/check_meeting",
+      "groups": [
+        0
+      ],
+      "handler": "fake",
+      "data": [
+        "meeting"
+      ]
+    },
+    "list_slots": {
+      "url": "/list_slots",
+      "groups": [
+        0
+      ],
+      "handler": "fake",
+      "data": [
+        "meeting"
+      ]
+    },
+    "list_votes": {
+      "url": "/list_votes",
+      "groups": [
+        1
+      ],
+      "handler": "fake",
+      "data": [
+        "meeting"
+      ]
+    },
+    "list_routes": {
+      "url": "/.*",
+      "groups": [
+        0,
+        1
+      ],
+      "handler": "routes",
+      "data": []
+    }
+  },
+  "write": {
+    "create_meeting": {
+      "url": "/create_metting",
+      "groups": [
+        1
+      ],
+      "handler": "fake",
+      "data": [
+        "meeting",
+        "name"
+      ]
+    },
+    "add_slot_to_survey": {
+      "url": "/add_slot_to_survey",
+      "groups": [
+        1
+      ],
+      "handler": "fake",
+      "data": [
+        "meeting",
+        "date"
+      ]
+    },
+    "validate_survey": {
+      "url": "/validate_survey",
+      "groups": [
+        1
+      ],
+      "handler": "fake",
+      "data": [
+        "meeting"
+      ]
+    },
+    "vote_slot": {
+      "url": "/vote",
+      "groups": [
+        0
+      ],
+      "handler": "fake",
+      "data": [
+        "name",
+        "meeting"
+      ]
+    },
+    "register": {
+      "url": "/register",
+      "groups": [
+        0
+      ],
+      "handler": "register",
+      "data": [
+        "login",
+        "password",
+        "firstname",
+        "lastname"
+      ]
+    },
+    "login": {
+      "url": "/login",
+      "groups": [
+        0
+      ],
+      "handler": "login",
+      "data": [
+        "login",
+        "password"
+      ]
+    },
+    "logout": {
+      "url": "/logout",
+      "groups": [
+        1
+      ],
+      "handler": "logout",
+      "data": []
+    }
+  }
+}

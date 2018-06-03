@@ -9,11 +9,23 @@
 namespace forward;
 
 use container\Collection;
+use handler\FakeHandler;
+use handler\meta\RouteHandler;
 
 class GetForwarder extends Forwarder
 {
     public function __construct()
     {
         $this->info = new Collection($_GET);
+    }
+
+    public function visitFakeHandler(FakeHandler $handler)
+    {
+        $handler->run();
+    }
+
+    public function visitRouteHandler(RouteHandler $handler)
+    {
+        $handler->run();
     }
 }

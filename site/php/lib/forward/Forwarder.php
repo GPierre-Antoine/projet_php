@@ -11,9 +11,12 @@ namespace forward;
 
 use container\Collection;
 use handler\connexion\LoginHandler;
+use handler\connexion\LogoutHandler;
 use handler\connexion\RegisterHandler;
+use handler\FakeHandler;
 use handler\Handler;
 use handler\HandlerVisitor;
+use handler\meta\RouteHandler;
 
 class Forwarder implements HandlerVisitor
 {
@@ -67,5 +70,20 @@ class Forwarder implements HandlerVisitor
     public function process(Handler $handler)
     {
         $handler->accept($this);
+    }
+
+    public function visitLogout(LogoutHandler $handler)
+    {
+        $this->makeException();
+    }
+
+    public function visitFakeHandler(FakeHandler $handler)
+    {
+        $this->makeException();
+    }
+
+    public function visitRouteHandler(RouteHandler $handler)
+    {
+        $this->makeException();
     }
 }

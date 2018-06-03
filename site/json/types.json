@@ -1,0 +1,10 @@
+{
+  "meeting": "number",
+  "firstname": "text",
+  "lastname": "text",
+  "password": "password",
+  "login": "text",
+  "date": "date",
+  "name": "text",
+  "slot": "number"
+}

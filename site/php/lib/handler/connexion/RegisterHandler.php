@@ -9,12 +9,14 @@
 namespace handler\connexion;
 
 
+use handler\DefaultRanAndSucceed;
 use handler\GenericPDOHandler;
 use handler\HandlerVisitor;
 use util\DbWrapper;
 
 class RegisterHandler extends GenericPDOHandler
 {
+    use DefaultRanAndSucceed;
 
     const LOGIN = "login";
     const PASSWORD = "password";
@@ -28,6 +30,7 @@ class RegisterHandler extends GenericPDOHandler
 
     public function run($login, $password, $firstname, $lastname)
     {
+        $this->setRan();
         $this->wrapper->run("INSERT INTO USERS (user_firstname, user_lastname) VALUES (?,?)", [$firstname, $lastname]);
         $user_id = $this->wrapper->lastInsertID();
 
@@ -39,6 +42,7 @@ class RegisterHandler extends GenericPDOHandler
         $login_id = $this->wrapper->lastInsertID();
 
         $this->wrapper->run("INSERT INTO USER_INFO (user_id, password_id, login_id) VALUES ($user_id,$password_id,$login_id)");
+        $this->setSuccess();
     }
 
     public function accept(HandlerVisitor $visitor)

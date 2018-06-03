@@ -3,4 +3,5 @@ logs/
 site/cache/
 secret.php
 site/resources/
+vendor/
 ssl/

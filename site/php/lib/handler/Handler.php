@@ -11,6 +11,7 @@ namespace handler;
 
 interface Handler
 {
-
+    public function hasBeenRan() : bool;
+    public function succeeded() : bool;
     public function accept(HandlerVisitor $visitor);
 }
