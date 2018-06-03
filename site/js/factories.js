@@ -52,10 +52,22 @@ function RouteFactory(types) {
 RouteFactory.prototype = Object.create(Factory.prototype);
 RouteFactory.prototype.constructor = RouteFactory;
 
-RouteFactory.prototype.make = function (id,data) {
+RouteFactory.prototype.make = function (id, data) {
     let types = this.types;
     let fields = data.data.map(function (item) {
         return types[item].clone();
     });
-    return new Route(id,data.title, data.abstract, data.url, fields, data.groups, data.accepts, data.type);
+    return new Route(id, data.title, data.abstract, data.url, fields, data.groups, data.accepts, data.type);
+};
+
+
+function MeetingFactory() {
+    Factory.call(this);
+}
+
+MeetingFactory.prototype = Object.create(Factory.prototype);
+MeetingFactory.prototype.constructor = MeetingFactory;
+
+MeetingFactory.prototype.make = function (data) {
+    return new Meeting(data.id, data.user, data.name);
 };

@@ -41,11 +41,10 @@ class JavascriptViewer extends Viewer
         $types = file_get_contents(__DIR__.'/../../../json/types.json');
         $identity = $this->loginHandler->attemptCacheLogin();
         $group = resolve_group($identity);
-        if ($group>0){
+        if ($group > 0) {
             $user = ",user:".json_encode($identity);
-        }
-        else{
-            $user='';
+        } else {
+            $user = '';
         }
         echo $this->makePage(new EmulatedBase("<script type='application/javascript'>let app = new MeetingApp(); app.start({routes:$json,group:$group,types:$types{$user}})</script>"));
 
@@ -79,7 +78,7 @@ class JavascriptViewer extends Viewer
             js_dir.'/factories.js',
             js_dir.'/model.js',
             js_dir.'/log.js',
-            js_dir.'/routes.js',
+            js_dir.'/Route.js',
             js_dir.'/activity/Activity.js',
             js_dir.'/activity/LoginActivity.js',
             js_dir.'/activity/LogoutActivity.js',
@@ -87,6 +86,11 @@ class JavascriptViewer extends Viewer
             js_dir.'/activity/CreateMeetingActivity.js',
             js_dir.'/activity/RouteActivity.js',
             js_dir.'/activity/ListMeetingActivity.js',
+            js_dir.'/printer/Printer.js',
+            js_dir.'/printer/RoutePrinter.js',
+            js_dir.'/printer/MeetingPrinter.js',
+            js_dir.'/application/Main.js',
+            js_dir.'/application/MeetingApp.js',
             js_dir.'/starters.js',
             css_dir.'/alerts.css',
             css_dir.'/basic.css',
