@@ -14,6 +14,7 @@ use handler\connexion\LogoutHandler;
 use handler\connexion\RegisterHandler;
 use handler\meeting\AddSlotHandler;
 use handler\meeting\CreateMeetingHandler;
+use handler\meeting\DeleteMeetingHandler;
 
 class PostForwarder extends Forwarder
 {
@@ -68,5 +69,12 @@ class PostForwarder extends Forwarder
         $meeting = $this->secureGet(AddSlotHandler::MEETING);
         $date = $this->secureGet(AddSlotHandler::DATE);
         $handler->run($meeting, $date);
+    }
+
+    public function visitDeleteMeetingHandler(DeleteMeetingHandler $handler)
+    {
+        $this->assertHasKey(AddSlotHandler::MEETING);
+        $meeting = $this->secureGet(AddSlotHandler::MEETING);
+        $handler->run($meeting, $this->loginHandler->getUser());
     }
 }

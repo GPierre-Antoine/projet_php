@@ -28,7 +28,7 @@ MeetingApp.prototype.start = function (data) {
         let register_activity = new RegisterActivity(this.logger, this.thread, routes.register, login_activity);
         let logout_activity = new LogoutActivity(this.logger, this.thread, routes.logout);
         let make_meeting_activity = new CreateMeetingActivity(this.logger, this.thread, routes.create_meeting, routes.add_slot_to_survey);
-        let list_meeting = new ListMeetingActivity(this.logger, this.thread, routes.list_meetings, routes.list_votes);
+        let list_meeting = new ListMeetingActivity(this.logger, this.thread, routes.list_meetings, routes.list_votes, routes.delete);
 
 
         let base = this.addActivity(route_activity);

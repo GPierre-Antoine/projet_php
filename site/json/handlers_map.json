@@ -10,5 +10,6 @@
   "CreateMeetingHandler": "create_meeting",
   "ListMeetingHandler": "list_meeting",
   "ListSlotHandler": "list_slots",
-  "VoteHandler": "vote_slot"
+  "VoteHandler": "vote_slot",
+  "DeleteMeetingHandler": "delete_meeting"
 }

@@ -21,7 +21,7 @@
     "data": [
       "meeting"
     ],
-    "type":"GET"
+    "type": "GET"
   },
   "list_slots": {
     "title": "List slots",
@@ -47,7 +47,7 @@
     "data": [
       "meeting"
     ],
-    "type":"POST"
+    "type": "POST"
   },
   "list_routes": {
     "title": "List all routes",
@@ -142,6 +142,19 @@
     ],
     "handler": "logout",
     "data": [],
+    "type": "POST"
+  },
+  "delete": {
+    "title": "Delete meeting",
+    "abstract": "Delete a survey",
+    "url": "/delete_meeting",
+    "groups": [
+      1
+    ],
+    "handler": "delete_meeting",
+    "data": [
+      "meeting"
+    ],
     "type": "POST"
   }
 }

@@ -20,6 +20,7 @@ use handler\meeting\AddSlotHandler;
 use handler\meeting\CheckMeetingHandler;
 use handler\meeting\CheckMeetingVotesHandler;
 use handler\meeting\CreateMeetingHandler;
+use handler\meeting\DeleteMeetingHandler;
 use handler\meeting\ListMeetingHandler;
 use handler\meeting\ListSlotHandler;
 use handler\meeting\VoteHandler;
@@ -125,6 +126,11 @@ class Forwarder implements HandlerVisitor
     }
 
     public function visitVoteHandler(VoteHandler $handler)
+    {
+        $this->makeException();
+    }
+
+    public function visitDeleteMeetingHandler(DeleteMeetingHandler $handler)
     {
         $this->makeException();
     }

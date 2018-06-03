@@ -91,7 +91,6 @@ class JavascriptViewer extends Viewer
             js_dir.'/printer/MeetingPrinter.js',
             js_dir.'/application/Main.js',
             js_dir.'/application/MeetingApp.js',
-            js_dir.'/starters.js',
             css_dir.'/alerts.css',
             css_dir.'/basic.css',
 

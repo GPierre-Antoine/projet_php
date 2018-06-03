@@ -16,6 +16,7 @@ use handler\meeting\AddSlotHandler;
 use handler\meeting\CheckMeetingHandler;
 use handler\meeting\CheckMeetingVotesHandler;
 use handler\meeting\CreateMeetingHandler;
+use handler\meeting\DeleteMeetingHandler;
 use handler\meeting\ListMeetingHandler;
 use handler\meeting\ListSlotHandler;
 use handler\meeting\VoteHandler;
@@ -35,4 +36,5 @@ interface HandlerVisitor
     public function visitCheckMeetingHandler(CheckMeetingHandler $handler);
     public function visitAddSlotHandler(AddSlotHandler $handler);
     public function visitVoteHandler(VoteHandler $handler);
+    public function visitDeleteMeetingHandler(DeleteMeetingHandler $handler);
 }
