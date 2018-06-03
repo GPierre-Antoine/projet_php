@@ -3,5 +3,12 @@
   "LoginHandler": "login",
   "LogoutHandler": "logout",
   "RegisterHandler": "register",
-  "RouteHandler": "routes"
+  "RouteHandler": "routes",
+  "AddSlotHandler": "add_slot",
+  "CheckMeetingHandler": "check_meeting",
+  "CheckMeetingVotesHandler": "check_meeting_full",
+  "CreateMeetingHandler": "create_meeting",
+  "ListMeetingHandler": "list_meeting",
+  "ListSlotHandler": "list_slots",
+  "VoteHandler": "vote_slot"
 }

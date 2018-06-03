@@ -18,18 +18,18 @@ class Feedback implements JsonSerializable
      */
     private $status;
     /**
-     * @var string
+     * @var mixed
      */
-    private $message;
+    private $data;
 
-    public function __construct(bool $status, string $message)
+    public function __construct(bool $status, $data)
     {
         $this->status = $status;
-        $this->message = $message;
+        $this->data = $data;
     }
 
     public function jsonSerialize()
     {
-        return ['status' => $this->status, 'message' => $this->message];
+        return ['status' => $this->status, 'data' => $this->data];
     }
 }

@@ -14,8 +14,9 @@ use handler\connexion\LogoutHandler;
 use handler\connexion\RegisterHandler;
 use handler\FakeHandler;
 use handler\Handler;
+use handler\meeting\AddSlotHandler;
+use handler\meeting\CreateMeetingHandler;
 use handler\meta\RouteHandler;
-use util\info\CollectionFeedback;
 use util\info\Feedback;
 
 class JsonViewer extends Viewer
@@ -53,7 +54,20 @@ class JsonViewer extends Viewer
 
     public function visitRouteHandler(RouteHandler $handler)
     {
-        $feedback = new CollectionFeedback($handler->succeeded(), $handler->getRoutes());
+        $feedback = new Feedback($handler->succeeded(), $handler->getRoutes());
         echo json_encode($feedback);
     }
+
+    public function visitCreateMeetingHandler(CreateMeetingHandler $handler)
+    {
+        $x = new Feedback($handler->succeeded(), $handler->getMeeting());
+        echo json_encode($x);
+    }
+
+    public function visitAddSlotHandler(AddSlotHandler $handler)
+    {
+        $this->viewBinaryHandler($handler);
+    }
+
+
 }

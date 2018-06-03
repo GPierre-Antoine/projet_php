@@ -12,12 +12,17 @@ use container\Collection;
 use handler\connexion\LoginHandler;
 use handler\connexion\LogoutHandler;
 use handler\connexion\RegisterHandler;
+use handler\meeting\AddSlotHandler;
+use handler\meeting\CreateMeetingHandler;
 
 class PostForwarder extends Forwarder
 {
-    public function __construct()
+    private $loginHandler;
+
+    public function __construct(LoginHandler $handler)
     {
         $this->info = new Collection($_POST);
+        $this->loginHandler = $handler;
     }
 
     public function visitLogin(LoginHandler $handler)
@@ -25,7 +30,10 @@ class PostForwarder extends Forwarder
         $this->assertHasKey(LoginHandler::LOGIN, LoginHandler::PASSWORD);
         $login = $this->secureGet(LoginHandler::LOGIN);
         $password = $this->unsecureGet(LoginHandler::PASSWORD);
-        $handler->run($login, $password);
+        try {
+            $handler->run($login, $password);
+        } catch (\Exception $e) {
+        }
     }
 
     public function visitRegister(RegisterHandler $handler)
@@ -45,5 +53,20 @@ class PostForwarder extends Forwarder
     public function visitLogout(LogoutHandler $handler)
     {
         $handler->run();
+    }
+
+    public function visitCreateMeetingHandler(CreateMeetingHandler $handler)
+    {
+        $this->assertHasKey(CreateMeetingHandler::NAME);
+        $name = $this->secureGet(CreateMeetingHandler::NAME);
+        $handler->run($this->loginHandler->getUser(), $name);
+    }
+
+    public function visitAddSlotHandler(AddSlotHandler $handler)
+    {
+        $this->assertHasKey(AddSlotHandler::MEETING, AddSlotHandler::DATE);
+        $meeting = $this->secureGet(AddSlotHandler::MEETING);
+        $date = $this->secureGet(AddSlotHandler::DATE);
+        $handler->run($meeting, $date);
     }
 }

@@ -6,7 +6,7 @@
     "groups": [
       1
     ],
-    "handler": "fake",
+    "handler": "list_meeting",
     "data": [],
     "type": "POST"
   },
@@ -17,7 +17,7 @@
     "groups": [
       0
     ],
-    "handler": "fake",
+    "handler": "check_meeting",
     "data": [
       "meeting"
     ],
@@ -30,7 +30,7 @@
     "groups": [
       0
     ],
-    "handler": "fake",
+    "handler": "list_slots",
     "data": [
       "meeting"
     ],
@@ -43,7 +43,7 @@
     "groups": [
       1
     ],
-    "handler": "fake",
+    "handler": "check_meeting_full",
     "data": [
       "meeting"
     ],
@@ -69,9 +69,8 @@
     "groups": [
       1
     ],
-    "handler": "fake",
+    "handler": "create_meeting",
     "data": [
-      "meeting",
       "name"
     ],
     "type": "POST"
@@ -83,23 +82,10 @@
     "groups": [
       1
     ],
-    "handler": "fake",
+    "handler": "add_slot",
     "data": [
       "meeting",
       "date"
-    ],
-    "type": "POST"
-  },
-  "validate_survey": {
-    "title": "Validate a survey",
-    "abstract": "Validate a meeting survey",
-    "url": "/validate_survey",
-    "groups": [
-      1
-    ],
-    "handler": "fake",
-    "data": [
-      "meeting"
     ],
     "type": "POST"
   },
@@ -110,7 +96,7 @@
     "groups": [
       0
     ],
-    "handler": "fake",
+    "handler": "vote_slot",
     "data": [
       "name",
       "meeting"

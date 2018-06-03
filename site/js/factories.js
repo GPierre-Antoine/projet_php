@@ -52,10 +52,10 @@ function RouteFactory(types) {
 RouteFactory.prototype = Object.create(Factory.prototype);
 RouteFactory.prototype.constructor = RouteFactory;
 
-RouteFactory.prototype.make = function (data) {
+RouteFactory.prototype.make = function (id,data) {
     let types = this.types;
     let fields = data.data.map(function (item) {
-        return types[item];
+        return types[item].clone();
     });
-    return new Route(data.title, data.abstract, data.url, fields, data.groups, data.accepts, data.type);
+    return new Route(id,data.title, data.abstract, data.url, fields, data.groups, data.accepts, data.type);
 };

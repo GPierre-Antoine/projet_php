@@ -34,6 +34,10 @@ function Type(id, name) {
     this.input = undefined;
 }
 
+Type.prototype.setName = function(new_name){
+    this.name = new_name;
+};
+
 Type.prototype.makeInput = function (id) {
 };
 Type.prototype.applyDefault = function ($, id) {
@@ -43,7 +47,9 @@ Type.prototype.applyDefault = function ($, id) {
 Type.prototype.getFormatedData = function () {
     return {name: this.id, field: this.name, input: this.input};
 };
-
+Type.prototype.clone = function () {
+    return jQuery.extend(true, {}, this)
+};
 
 function ScalarType(id, name, kind) {
     Type.call(this, id, name);
@@ -54,7 +60,7 @@ ScalarType.prototype = Object.create(Type.prototype);
 ScalarType.prototype.constructor = ScalarType;
 
 ScalarType.prototype.makeInput = function (id) {
-    return $('<DIV>').addClass('form-group').append($('<LABEL>').text(this.name).attr('for', id), this.applyDefault($('<INPUT>'), id));
+    return $('<DIV>').addClass('form-group').append($('<LABEL>').addClass('capitalize').text(this.name).attr('for', id), this.applyDefault($('<INPUT>'), id));
 };
 
 function RemoteType(id, name, origin) {
@@ -66,5 +72,5 @@ RemoteType.prototype = Object.create(Type.prototype);
 RemoteType.prototype.constructor = RemoteType;
 
 RemoteType.prototype.makeInput = function (id) {
-    return $('<DIV>').addClass('form-group').append($('<LABEL>').text(this.name).attr('for', id), this.applyDefault($('<SELECT>'), id));
+    return $('<DIV>').addClass('form-group').append($('<LABEL>').addClass('capitalize').text(this.name).attr('for', id), this.applyDefault($('<SELECT>'), id));
 };

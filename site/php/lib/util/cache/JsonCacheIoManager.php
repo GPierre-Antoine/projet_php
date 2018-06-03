@@ -9,17 +9,15 @@
 namespace util\cache;
 
 
-use container\Collection;
-
-class IniCacheIoManager implements CacheIoManager
+class JsonCacheIoManager implements CacheIoManager
 {
     private $filename;
-    /** @var Collection */
+    /** @var array */
     private $content;
     private $changed;
 
     /**
-     * IniCacheIoManager constructor.
+     * JsonCacheIoManager constructor.
      *
      * @param $filename
      */
@@ -27,8 +25,10 @@ class IniCacheIoManager implements CacheIoManager
     {
         if (!file_exists($filename)) {
             touch($filename);
+            file_put_contents($filename, "{}");
         }
         $this->filename = $filename;
+
     }
 
     public function purge()
@@ -36,12 +36,12 @@ class IniCacheIoManager implements CacheIoManager
         $this->content = null;
     }
 
-    public function offsetExists($offset)
+    public function offsetGet($offset)
     {
         $this->makeSureCacheIsRead();
         $offset = self::quickHash($offset);
 
-        return $this->content->offsetExists($offset);
+        return $this->content[$offset];
     }
 
     public function makeSureCacheIsRead()
@@ -57,25 +57,17 @@ class IniCacheIoManager implements CacheIoManager
             throw new \RuntimeException('Cache Already Generated');
         }
 
-        $holder = parse_ini_file($this->filename);
+        $holder = json_decode(file_get_contents($this->filename), true);
         if (!is_array($holder)) {
             throw new \RuntimeException('Error when reading cache');
         }
-        $this->content = new Collection($holder);
+        $this->content = $holder;
         $this->changed = false;
     }
 
     private static function quickHash($string)
     {
         return crc32($string);
-    }
-
-    public function offsetGet($offset)
-    {
-        $this->makeSureCacheIsRead();
-        $offset = self::quickHash($offset);
-
-        return $this->content->offsetGet($offset);
     }
 
     public function offsetSet($offset, $value)
@@ -85,21 +77,34 @@ class IniCacheIoManager implements CacheIoManager
             throw new \RuntimeException("Cache key can't be null");
         }
         $offset = self::quickHash($offset);
-        if (!$this->content->hasKey($offset) || $this->content[$offset] !== $value) {
+        if (!self::hasKey($this->content, $offset) || $this->content[$offset] !== $value) {
             $this->changed = true;
-            $this->content->offsetSet($offset, $value);
+            $this->content[$offset] = $value;
         }
+    }
+
+    private static function hasKey($array, $key)
+    {
+        return isset($array[$key]) && !empty($array[$key]);
     }
 
     public function offsetUnset($offset)
     {
         $this->makeSureCacheIsRead();
         $offset = self::quickHash($offset);
-        if (!$this->content->hasKey($offset)) {
+        if (!self::hasKey($this->content, $offset)) {
             return;
         }
-        $this->content->offsetUnset($offset);
+        unset($this->content[$offset]);
         $this->changed = true;
+    }
+
+    public function offsetExists($offset)
+    {
+        $this->makeSureCacheIsRead();
+        $offset = self::quickHash($offset);
+
+        return self::hasKey($this->content, $offset);
     }
 
     public function __destruct()
@@ -112,7 +117,7 @@ class IniCacheIoManager implements CacheIoManager
     public function write()
     {
         $this->assertCacheIsRead();
-        $content = self::array_to_ini($this->content);
+        $content = json_encode($this->content);
         file_put_contents($this->filename, $content);
     }
 
@@ -121,15 +126,5 @@ class IniCacheIoManager implements CacheIoManager
         if (is_null($this->content)) {
             throw new \RuntimeException("Cache not read");
         }
-    }
-
-    private static function array_to_ini($iterable)
-    {
-        $out = '';
-        foreach ($iterable as $k => $v) {
-            $out .= "$k=$v".PHP_EOL;
-        }
-
-        return $out;
     }
 }

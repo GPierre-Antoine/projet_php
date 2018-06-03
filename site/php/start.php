@@ -7,26 +7,18 @@
  */
 
 
-use container\AutoHashCollection;
 use container\Collection;
 use forward\DefaultForwarder;
 use forward\GetForwarder;
 use forward\PostForwarder;
 use handler\connexion\LoginHandler;
-use handler\connexion\LogoutHandler;
-use handler\connexion\RegisterHandler;
-use handler\FakeHandler;
-use handler\Handler;
-use handler\meta\RouteHandler;
 use init\CreateDatabase;
 use init\CreateTables;
 use util\cache\CacheIoManager;
 use util\client\ClientStore;
 use util\DbWrapper;
 use util\encryption\AESEncryptionManager;
-use util\encryption\EncryptionManager;
 use util\routing\Route;
-use util\routing\RouteFactory;
 use util\Settings;
 use viewer\JavascriptViewer;
 use viewer\JsonViewer;
@@ -75,13 +67,13 @@ function mb_strip_from_last_index($string, $needle)
     return mb_substr($string, $last_index);
 }
 
-function get_forwarder($request_type)
+function get_forwarder($request_type, $loginHandler)
 {
     switch ($request_type) {
         case 'POST':
-            return new PostForwarder();
+            return new PostForwarder($loginHandler);
         case 'GET':
-            return new GetForwarder();
+            return new GetForwarder($loginHandler);
         default:
             return new DefaultForwarder();
     }
@@ -102,61 +94,6 @@ function init_views(LoginHandler $handler)
     return $views;
 }
 
-/**
- * @param DbWrapper         $db
- * @param CacheIoManager    $cache
- * @param ClientStore       $store
- * @param EncryptionManager $encryptionManager
- *
- * @return Collection|Handler[]
- */
-function init_handlers(
-    DbWrapper $db,
-    CacheIoManager $cache,
-    ClientStore $store,
-    EncryptionManager $encryptionManager
-) {
-    $handlers_file = __DIR__.'/../json/handlers_map.json';
-    $keys = json_decode(file_get_contents($handlers_file), true);
-    $hash_f = function (Handler $h) use ($keys) {
-        return $keys[mb_strip_from_last_index(get_class($h), '\\')];
-    };
-    $handlers = new AutoHashCollection($hash_f);
-    $handlers[] = new RegisterHandler($db);
-    $handlers[] = new LogoutHandler($store, $cache);
-    $handlers[] = new FakeHandler();
-    $handlers[] = new RouteHandler();
-
-    return $handlers;
-}
-
-function get_routes($db, $store, $cache, $encryptionManager)
-{
-    $login_handler = new LoginHandler($db, $store, $cache, $encryptionManager);
-
-
-    $handlers = init_handlers($db, $cache, $store, $encryptionManager);
-    $handlers[] = $login_handler;
-
-    $make_function = [new RouteFactory($handlers), 'make'];
-
-    $routes = json_decode(file_get_contents(__DIR__.'/../json/routes.json'));
-
-    /** @var Collection|Route[] $collection */
-    $collection = new Collection(array_map($make_function, (array)$routes));
-
-    $result = $login_handler->attemptCacheLogin();
-    $group = resolve_group($result);
-
-    $filtererd_collection = $collection->filter(function (Route $item) use ($group) {
-        return $item->hasGroup($group);
-    });
-
-    $handlers['routes']->setRoutes($collection);
-
-    return $filtererd_collection;
-}
-
 function resolve_group($output)
 {
     return $output === false ? 0 : 1;
@@ -172,7 +109,13 @@ function application_meetings(
             $settings->getDbPassword());
         $encryptionManager = new AESEncryptionManager($cache[AESEncryptionManager::KEY_TYPE]);
 
-        $routes = get_routes($db, $store, $cache, $encryptionManager);
+        $routeur = new \util\routing\Routeur($db, $store, $cache, $encryptionManager,
+            __DIR__.'/../json/routes.json',
+            __DIR__.'/../json/handlers_map.json'
+        );
+
+        $routes = $routeur->getValidRoutes();
+
         $uri = $_SERVER['REQUEST_URI'];
 
         if (empty($_SERVER['HTTP_ACCEPT'])) {
@@ -197,10 +140,10 @@ function application_meetings(
         /** @var Route $route */
         $route = $right_handler->first();
 
-        $forwarder = get_forwarder($_SERVER['REQUEST_METHOD']);
+        $forwarder = get_forwarder($_SERVER['REQUEST_METHOD'], $routeur->getLoginHandler());
 
 
-        $viewers = init_views($routes['login']->getHandler());
+        $viewers = init_views($routeur->getLoginHandler());
 
         $adequate_viewers = $viewers->filter(function (Viewer $v) use ($accept) {
             return $v->getContentType() === $accept;
@@ -213,6 +156,7 @@ function application_meetings(
         $viewer = $adequate_viewers->first();
 
         $route->getHandler()->accept($forwarder);
+        $viewer->printContentType();
         $route->getHandler()->accept($viewer);
 
     } catch (Exception $e) {
@@ -225,7 +169,7 @@ function application_meetings(
                     break;
                 default:
                     http_response_code($e->getCode() || 500);
-                    echo $e->getMessage();
+                    echo $e->getMessage(), PHP_EOL, $e->getTraceAsString();
                     break;
             }
             exit;

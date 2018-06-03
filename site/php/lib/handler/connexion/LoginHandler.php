@@ -76,6 +76,7 @@ class LoginHandler extends GenericPDOHandler
         }
         self::giveIVToStore();
         $this->pushUserToCache($contact);
+        $this->getUserFromCache($contact->getLogin());
         $this->pushInfoToStore($contact->getInfos());
         $this->setSuccess();
     }
@@ -114,6 +115,19 @@ class LoginHandler extends GenericPDOHandler
         $this->cacheIoManager[$contact->getLogin()] = serialize($contact);
     }
 
+    public function getUserFromCache($login) : User
+    {
+        return unserialize($this->cacheIoManager[$login]);
+    }
+
+    /**
+     * @return User
+     */
+    public function getUser() : User
+    {
+        return $this->user;
+    }
+
     public function pushInfoToStore(LoginInfo $info)
     {
         $this->clientStore[self::LOGIN_INFO] = $this->encryptionManager->encrypt(serialize($info));
@@ -125,6 +139,7 @@ class LoginHandler extends GenericPDOHandler
             if ($this->succeeded()) {
                 return $this->user;
             }
+
             return false;
         }
         $this->setRan();
@@ -160,12 +175,12 @@ class LoginHandler extends GenericPDOHandler
 
     public function checkStoreHasIV()
     {
-        return isset($this->clientStore[EncryptionManager::IV_NAME]);
+        return $this->clientStore->offsetExists(EncryptionManager::IV_NAME);
     }
 
     public function checkStoreHasInfo()
     {
-        return isset($this->clientStore[self::LOGIN_INFO]);
+        return $this->clientStore->offsetExists(self::LOGIN_INFO);
     }
 
     private function giveIVToEncrypter()
@@ -180,14 +195,7 @@ class LoginHandler extends GenericPDOHandler
 
     public function checkCacheHasInfo($login)
     {
-        return isset($this->cacheIoManager[$login]);
-    }
-
-    public function getUserFromCache($login) : User
-    {
-        $x = $this->cacheIoManager[$login];
-        var_dump($x);
-        return unserialize($x);
+        return $this->cacheIoManager->offsetExists($login);
     }
 
     public function accept(HandlerVisitor $visitor)

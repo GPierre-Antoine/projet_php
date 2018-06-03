@@ -1,7 +1,8 @@
 "use strict";
 
 
-function Route(title, abstract, url, data, groups, accept, type) {
+function Route(id, title, abstract, url, data, groups, accept, type) {
+    this.id = id;
     this.title = title;
     this.abstract = abstract;
     this.url = url;
@@ -21,6 +22,10 @@ Route.prototype.run = function (data) {
     return $.ajax(data);
 };
 
+Route.prototype.clone = function () {
+    return jQuery.extend(true, {}, this);
+};
+
 function RoutePrinter() {
 
 }
@@ -37,7 +42,10 @@ LineRoutePrinter.prototype = Object.create(RoutePrinter.prototype);
 LineRoutePrinter.prototype.constructor = LineRoutePrinter;
 
 LineRoutePrinter.prototype.print = function (data) {
-    return $('<DIV>').addClass('primary border-divider alert').append($('<DIV>').text(data.title), $('<DIV>').addClass('secondary').text(data.abstract))
+    return $('<DIV>').addClass('primary border-divider alert').append($('<DIV>').text(data.title), $('<DIV>').addClass('secondary').append(
+        $('<SPAN>').text(data.abstract),
+        $('<SPAN>').html(" (<b>" + data.id + "</b>)"),
+    ))
 };
 
 function BlockRoutePrinter() {

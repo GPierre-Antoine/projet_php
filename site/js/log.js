@@ -26,6 +26,7 @@ function SimpleMessage(message, options) {
     AbstractMessage.call(this);
     this.message = message;
     this.type = options.type;
+    this.html = options.html;
 }
 
 SimpleMessage.prototype = Object.create(AbstractMessage.prototype);
@@ -243,6 +244,17 @@ SimpleMessageLogger.prototype.log = function (ex) {
         }
     }
 
+
+    let message;
+
+    if (typeof ex.html !== "undefined" && ex.html ===true){
+        message = $('<SPAN>').html(ex.getMessage());
+    }
+    else
+    {
+        message = $('<SPAN>').text(ex.getMessage());
+    }
+
     let timer = 0;
     let button = $('<BUTTON>')
         .addClass('pull-right close theme-icons')
@@ -252,8 +264,7 @@ SimpleMessageLogger.prototype.log = function (ex) {
         .addClass('word-wrap')
         .append($('<SPAN>')
             .text('Message : '))
-        .append($('<SPAN>')
-            .text(ex.getMessage()));
+        .append(message);
     alert
         .append(button)
         .append(text);

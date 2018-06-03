@@ -10,9 +10,6 @@ namespace viewer;
 
 
 use handler\connexion\LoginHandler;
-use handler\connexion\LogoutHandler;
-use handler\connexion\RegisterHandler;
-use handler\FakeHandler;
 use handler\meta\RouteHandler;
 use util\html\Base;
 use util\html\EmulatedBase;
@@ -33,26 +30,6 @@ class JavascriptViewer extends Viewer
         $this->loginHandler = $loginHandler;
     }
 
-    public function visitLogin(LoginHandler $handler)
-    {
-        // TODO: Implement visitLogin() method.
-    }
-
-    public function visitRegister(RegisterHandler $handler)
-    {
-        // TODO: Implement visitRegister() method.
-    }
-
-    public function visitLogout(LogoutHandler $handler)
-    {
-        // TODO: Implement visitLogout() method.
-    }
-
-    public function visitFakeHandler(FakeHandler $handler)
-    {
-        // TODO: Implement visitFakeHandler() method.
-    }
-
     public function getContentType()
     {
         return "text/html";
@@ -60,10 +37,17 @@ class JavascriptViewer extends Viewer
 
     public function visitRouteHandler(RouteHandler $handler)
     {
-        $json = json_encode($handler->getRoutes(),JSON_PRETTY_PRINT);
+        $json = json_encode($handler->getRoutes(), JSON_PRETTY_PRINT);
         $types = file_get_contents(__DIR__.'/../../../json/types.json');
-        $group = resolve_group($this->loginHandler->attemptCacheLogin());
-        echo $this->makePage(new EmulatedBase("<script type='application/javascript'>let app = new MeetingApp(); app.start({routes:$json,group:$group,types:$types})</script>"));
+        $identity = $this->loginHandler->attemptCacheLogin();
+        $group = resolve_group($identity);
+        if ($group>0){
+            $user = ",user:".json_encode($identity);
+        }
+        else{
+            $user='';
+        }
+        echo $this->makePage(new EmulatedBase("<script type='application/javascript'>let app = new MeetingApp(); app.start({routes:$json,group:$group,types:$types{$user}})</script>"));
 
     }
 
@@ -89,12 +73,19 @@ class JavascriptViewer extends Viewer
 
         $head->append($htmlMaker->resolve(
             css_dir.'/bs_overwrite.css',
+            js_dir.'/event.js',
+            js_dir.'/functions.js',
             js_dir.'/objects.js',
             js_dir.'/factories.js',
             js_dir.'/model.js',
             js_dir.'/log.js',
             js_dir.'/routes.js',
-            js_dir.'/activities.js',
+            js_dir.'/activity/Activity.js',
+            js_dir.'/activity/LoginActivity.js',
+            js_dir.'/activity/LogoutActivity.js',
+            js_dir.'/activity/RegisterActivity.js',
+            js_dir.'/activity/CreateMeetingActivity.js',
+            js_dir.'/activity/RouteActivity.js',
             js_dir.'/starters.js',
             css_dir.'/alerts.css',
             css_dir.'/basic.css',

@@ -16,6 +16,13 @@ use handler\connexion\RegisterHandler;
 use handler\FakeHandler;
 use handler\Handler;
 use handler\HandlerVisitor;
+use handler\meeting\AddSlotHandler;
+use handler\meeting\CheckMeetingHandler;
+use handler\meeting\CheckMeetingVotesHandler;
+use handler\meeting\CreateMeetingHandler;
+use handler\meeting\ListMeetingHandler;
+use handler\meeting\ListSlotHandler;
+use handler\meeting\VoteHandler;
 use handler\meta\RouteHandler;
 
 class Forwarder implements HandlerVisitor
@@ -42,7 +49,7 @@ class Forwarder implements HandlerVisitor
     {
         foreach ($string as $value) {
             if (!$this->hasKey($value)) {
-                throw new \RuntimeException("Missing argument : " . $value);
+                throw new \RuntimeException("Missing argument : ".$value);
             }
         }
     }
@@ -83,6 +90,41 @@ class Forwarder implements HandlerVisitor
     }
 
     public function visitRouteHandler(RouteHandler $handler)
+    {
+        $this->makeException();
+    }
+
+    public function visitListMeeting(ListMeetingHandler $handler)
+    {
+        $this->makeException();
+    }
+
+    public function visitListSlotHandler(ListSlotHandler $handler)
+    {
+        $this->makeException();
+    }
+
+    public function visitCreateMeetingHandler(CreateMeetingHandler $handler)
+    {
+        $this->makeException();
+    }
+
+    public function visitCheckMeetingVotesHandler(CheckMeetingVotesHandler $handler)
+    {
+        $this->makeException();
+    }
+
+    public function visitCheckMeetingHandler(CheckMeetingHandler $handler)
+    {
+        $this->makeException();
+    }
+
+    public function visitAddSlotHandler(AddSlotHandler $handler)
+    {
+        $this->makeException();
+    }
+
+    public function visitVoteHandler(VoteHandler $handler)
     {
         $this->makeException();
     }
