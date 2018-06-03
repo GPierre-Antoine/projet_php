@@ -76,6 +76,7 @@ class LoginHandler extends GenericPDOHandler
         }
         self::giveIVToStore();
         $this->pushUserToCache($contact);
+        $this->pushInfoToStore($contact->getInfos());
         $this->setSuccess();
     }
 
@@ -124,7 +125,6 @@ class LoginHandler extends GenericPDOHandler
             if ($this->succeeded()) {
                 return $this->user;
             }
-
             return false;
         }
         $this->setRan();
@@ -185,7 +185,9 @@ class LoginHandler extends GenericPDOHandler
 
     public function getUserFromCache($login) : User
     {
-        return unserialize($this->cacheIoManager[$login]);
+        $x = $this->cacheIoManager[$login];
+        var_dump($x);
+        return unserialize($x);
     }
 
     public function accept(HandlerVisitor $visitor)

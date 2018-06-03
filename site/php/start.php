@@ -168,7 +168,6 @@ function application_meetings(
     ClientStore $store
 ) {
     try {
-        $store->start();
         $db = new DbWrapper($settings->getApplicationName(), $settings->getDbHost(), $settings->getDbUser(),
             $settings->getDbPassword());
         $encryptionManager = new AESEncryptionManager($cache[AESEncryptionManager::KEY_TYPE]);

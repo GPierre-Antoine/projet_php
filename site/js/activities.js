@@ -13,8 +13,8 @@ function handle_error(logger) {
     };
 }
 
-function handle_success(logger, message){
-    return function(){
+function handle_success(logger, message) {
+    return function () {
         logger.log(message)
     }
 }
@@ -22,13 +22,12 @@ function handle_success(logger, message){
 function accumulate_data(logger, data) {
     let ajax_data = {};
     for (let i = 0; i < data.length; ++i) {
-        let item = data[i];
-        let val = item.getFormatedData();
-        if (val.value === '') {
-            logger.log(new ExceptionMessage("Valeur invalide pour le champ : " + item.name));
+        let val = data[i];
+        if (val.input.val() === '') {
+            logger.log(new ExceptionMessage("Valeur invalide pour le champ : " + val.field));
             return
         }
-        ajax_data[val.name] = val.value;
+        ajax_data[val.name] = val.input.val();
     }
     return ajax_data;
 }
@@ -86,18 +85,28 @@ LoginActivity.prototype.print = function () {
     let collection = data.map(function (item) {
         return item.makeInput(self.constructor.name + '-' + (++counter));
     });
+    let data_items = data.map(function(item){
+        return item.getFormatedData();
+    });
     collection.unshift($('<H1>').text('Connexion').addClass('primary'));
     collection.push($('<BUTTON>').addClass('btn btn-lg col-12 theme-accent theme-icons').text('Se connecter').attr('tab-index', 0).on('click', function () {
-        let ajax_data = accumulate_data(this.logger, data);
+        let ajax_data = accumulate_data(self.logger, data_items);
+        if (typeof ajax_data === "undefined")
+            return;
         self.logger.log(new SimpleMessage("Tentative de connexion"));
-        self.route_login.run({data: ajax_data, error: handle_error(self.logger), success:handle_success(self.logger, "Connexion Réussie")});
+        self.route_login.run({
+            data: ajax_data,
+            error: handle_error(self.logger),
+            success: handle_success(self.logger, "Connexion Réussie")
+        });
     }));
 
-    function handle_success(logger, message){
-        return function(){
+    function handle_success(logger, message) {
+        return function () {
             logger.log(new SimpleMessage(message))
         }
     }
+
     collection.push($('<SPAN>').addClass('clickable').text("Pas inscrit ? S'inscire").on('click', function () {
         self.register_link.click();
     }));
@@ -121,16 +130,22 @@ RegisterActivity.prototype.print = function () {
     let counter = 0;
     let data = this.route.data;
     let self = this;
-    let logger = self.logger;
     let collection = data.map(function (item) {
         return item.makeInput(self.constructor.name + '-' + (++counter));
     });
+    let data_items = data.map(function(item){
+        return item.getFormatedData();
+    });
     collection.unshift($('<H1>').text('Register').addClass('primary'));
     collection.push($('<BUTTON>').addClass('btn btn-lg col-12 theme-accent theme-icons').text('Se connecter').attr('tab-index', 0).on('click', function () {
-        let ajax_data = accumulate_data(this.logger, data);
+        let ajax_data = accumulate_data(self.logger, data_items);
+        if (typeof ajax_data === "undefined")
+            return;
         self.logger.log(new SimpleMessage("Inscription en cours"));
         self.route.run({
-            data: ajax_data, error: handle_error(self.logger), success:handle_success(self.logger,"Inscription Réussie")
+            data: ajax_data,
+            error: handle_error(self.logger),
+            success: handle_success(self.logger, "Inscription Réussie")
         });
     }));
 

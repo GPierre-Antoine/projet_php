@@ -40,9 +40,8 @@ Type.prototype.applyDefault = function ($, id) {
     this.input = $;
     return $.attr('name', this.id).attr('type', this.kind).attr('id', id).addClass('form-control')
 };
-
 Type.prototype.getFormatedData = function () {
-    return {name: this.id, value: this.input.val()};
+    return {name: this.id, field: this.name, input: this.input};
 };
 
 

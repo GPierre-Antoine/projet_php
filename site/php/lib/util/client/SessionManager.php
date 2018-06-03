@@ -9,10 +9,7 @@
 namespace util\client;
 
 
-use container\Collection;
-use container\CollectionForwarder;
-
-class SessionManager extends CollectionForwarder implements ClientStore
+class SessionManager implements ClientStore
 {
     const SERVER_NAME = 'SERVER_NAME';
     const TIMEOUT = 'TIMEOUT';
@@ -30,10 +27,10 @@ class SessionManager extends CollectionForwarder implements ClientStore
      */
     public function __construct($path = '/', $secure = true, $duration = 3600)
     {
-        parent::__construct([]);
         $this->path = $path;
         $this->secure = $secure;
         $this->duration = $duration;
+        $this->start();
     }
 
     public function start()
@@ -43,7 +40,6 @@ class SessionManager extends CollectionForwarder implements ClientStore
         ini_set('session.use_trans_sid', 0);
         session_set_cookie_params(0, $this->path, '', $this->secure, true);
         session_start();
-        $this->collection = new Collection($_SESSION);
     }
 
     public function destroy()
@@ -51,5 +47,30 @@ class SessionManager extends CollectionForwarder implements ClientStore
         setcookie(session_name(), '', time() - 3600, $this->path, '', $this->secure, true);
         $_SESSION = array();
         session_destroy();
+    }
+
+    public function offsetExists($offset)
+    {
+        return isset($_SESSION[self::quickHash($offset)]);
+    }
+
+    public static function quickHash($string)
+    {
+        return 'S'.crc32($string);
+    }
+
+    public function offsetGet($offset)
+    {
+        return $_SESSION[self::quickHash($offset)];
+    }
+
+    public function offsetSet($offset, $value)
+    {
+        $_SESSION[self::quickHash($offset)] = $value;
+    }
+
+    public function offsetUnset($offset)
+    {
+        unset($_SESSION[self::quickHash($offset)]);
     }
 }
