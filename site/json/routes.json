@@ -8,7 +8,7 @@
     ],
     "handler": "list_meeting",
     "data": [],
-    "type": "POST"
+    "type": "GET"
   },
   "check_meeting": {
     "title": "See Meeting",
@@ -21,7 +21,7 @@
     "data": [
       "meeting"
     ],
-    "type":"POST"
+    "type":"GET"
   },
   "list_slots": {
     "title": "List slots",
@@ -34,7 +34,7 @@
     "data": [
       "meeting"
     ],
-    "type": "POST"
+    "type": "GET"
   },
   "list_votes": {
     "title": "List votes",

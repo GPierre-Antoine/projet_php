@@ -103,26 +103,33 @@ MeetingApp.prototype.start = function (data) {
         let register_activity = new RegisterActivity(this.logger, this.thread, routes.register, login_activity);
         let logout_activity = new LogoutActivity(this.logger, this.thread, routes.logout);
         let make_meeting_activity = new CreateMeetingActivity(this.logger, this.thread, routes.create_meeting, routes.add_slot_to_survey);
+        let list_meeting = new ListMeetingActivity(this.logger, this.thread, routes.list_meetings, routes.list_votes);
+
 
         let base = this.addActivity(route_activity);
         this.addActivity(login_activity);
         let register_click = this.addActivity(register_activity);
         this.addActivity(logout_activity);
         this.addActivity(make_meeting_activity);
+        let list_meeting_click = this.addActivity(list_meeting);
 
         login_activity.setRegisterLink(register_click);
 
         route_activity.toggle(true);
 
-        let event = events.status_changed;
-
-        new EventListener(event, this.thread, function (event) {
+        new EventListener(events.status_changed, this.thread, function (event) {
             self.current_group = event.flag;
             self.toggleActivities();
             route_activity.group = event.flag;
             route_activity.reprint();
             base.click();
-        })
+        });
+
+        new EventListener(events.survey_created, this.thread, function (event) {
+            list_meeting.reprint();
+            list_meeting_click.click();
+        });
+
     } catch (e) {
         this.logger.log(ExceptionMessage.prototype.fromError(e))
     }
