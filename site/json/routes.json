@@ -10,19 +10,6 @@
     "data": [],
     "type": "GET"
   },
-  "check_meeting": {
-    "title": "See Meeting",
-    "abstract": "Check out meeting",
-    "url": "/check_meeting",
-    "groups": [
-      0
-    ],
-    "handler": "check_meeting",
-    "data": [
-      "meeting"
-    ],
-    "type": "GET"
-  },
   "list_slots": {
     "title": "List slots",
     "abstract": "List the available slots for a meeting",

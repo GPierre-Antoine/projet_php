@@ -5,7 +5,6 @@
   "RegisterHandler": "register",
   "RouteHandler": "routes",
   "AddSlotHandler": "add_slot",
-  "CheckMeetingHandler": "check_meeting",
   "CheckMeetingVotesHandler": "check_meeting_full",
   "CreateMeetingHandler": "create_meeting",
   "ListMeetingHandler": "list_meeting",

@@ -27,7 +27,7 @@ class ListSlotHandler extends GenericPDOHandler
     public function run($meeting)
     {
         $this->setRan();
-        $this->wrapper->run("SELECT", [$meeting]);
+        $this->wrapper->run("SELECT * FROM ", [$meeting]);
         $this->setSuccess();
     }
 }

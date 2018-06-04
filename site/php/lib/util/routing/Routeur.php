@@ -16,7 +16,6 @@ use handler\connexion\LogoutHandler;
 use handler\connexion\RegisterHandler;
 use handler\Handler;
 use handler\meeting\AddSlotHandler;
-use handler\meeting\CheckMeetingHandler;
 use handler\meeting\CheckMeetingVotesHandler;
 use handler\meeting\CreateMeetingHandler;
 use handler\meeting\DeleteMeetingHandler;
@@ -86,7 +85,6 @@ class Routeur
         $handlers[] = new ListSlotHandler($this->db);
         $handlers[] = new RegisterHandler($this->db);
         $handlers[] = new ListMeetingHandler($this->db);
-        $handlers[] = new CheckMeetingHandler($this->db);
         $handlers[] = new CreateMeetingHandler($this->db);
         $handlers[] = new DeleteMeetingHandler($this->db);
         $handlers[] = new CheckMeetingVotesHandler($this->db);
