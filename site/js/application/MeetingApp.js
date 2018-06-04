@@ -29,7 +29,7 @@ MeetingApp.prototype.start = function (data) {
         let logout_activity = new LogoutActivity(this.logger, this.thread, routes.logout);
         let make_meeting_activity = new CreateMeetingActivity(this.logger, this.thread, routes.create_meeting, routes.add_slot_to_survey);
         let list_meeting = new ListMeetingActivity(this.logger, this.thread, routes.list_meetings, routes.list_votes, routes.delete);
-
+        let vote = new VoteActivity(this.logger, this.thread, routes.list_votes, routes.vote_slot, location.pathname);
 
         let base = this.addActivity(route_activity);
         this.addActivity(login_activity);
@@ -37,10 +37,18 @@ MeetingApp.prototype.start = function (data) {
         this.addActivity(logout_activity);
         this.addActivity(make_meeting_activity);
         let list_meeting_click = this.addActivity(list_meeting);
+        let vote_click = this.addActivity(vote);
+
+
+        if (location.pathname.match(/\/vote\/([0-9]+)/)) {
+            vote_click.click();
+        }
+        else {
+            route_activity.toggle(true);
+        }
 
         login_activity.setRegisterLink(register_click);
 
-        route_activity.toggle(true);
 
         new EventListener(events.status_changed, this.thread, function (event) {
             self.current_group = event.flag;

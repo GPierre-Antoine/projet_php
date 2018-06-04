@@ -15,7 +15,6 @@ use handler\GenericPDOHandler;
 use handler\HandlerVisitor;
 use model\Meeting;
 use model\Slot;
-use model\User;
 use model\Vote;
 
 class CheckMeetingVotesHandler extends GenericPDOHandler
@@ -29,13 +28,12 @@ class CheckMeetingVotesHandler extends GenericPDOHandler
         $visitor->visitCheckMeetingVotesHandler($this);
     }
 
-    public function run($meeting, User $user)
+    public function run($meeting)
     {
         $this->setRan();
-        $uid = $user->getId();
         $stmt
-            = $this->wrapper->run("SELECT * FROM MEETINGS NATURAL JOIN MEETING_SLOTS WHERE meeting_id = ? and user_id = ?",
-            [$meeting, $uid]);
+            = $this->wrapper->run("SELECT * FROM MEETINGS NATURAL JOIN MEETING_SLOTS WHERE meeting_id = ?",
+            [$meeting]);
 
         /** @var Slot[]|Collection $slots */
         $data = $stmt->useAutoHashMap(function ($data) {
@@ -49,7 +47,7 @@ class CheckMeetingVotesHandler extends GenericPDOHandler
             throw new \RuntimeException('Unknown Meeting');
         }
         $mdata = $data->first();
-        $meeting = new Meeting($mdata->meeting_id, $user, $mdata->meeting_name);
+        $meeting = new Meeting($mdata->meeting_id, $mdata->user_id, $mdata->meeting_name);
 
         foreach ($slots as $slot) {
             $meeting->addSlot($slot);

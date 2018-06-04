@@ -52,6 +52,6 @@ class GetForwarder extends Forwarder
     {
         $this->assertHasKey(ListSlotHandler::MEETING);
         $meeting = $this->secureGet(ListSlotHandler::MEETING);
-        $handler->run($meeting, $this->loginHandler->getUser());
+        $handler->run($meeting);
     }
 }

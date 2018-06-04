@@ -18,8 +18,12 @@ MeetingPrinter.prototype.print = function (data) {
     let self = this;
     let viewer;
     let once = false;
+    let url = '/localhost/vote/' + data.id;
     let element = $('<DIV>').addClass('col-12 alert border-divider').append($('<DIV>').addClass('flo flo-row').append(
         $('<H3>').text(data.name),
+        $('<H3>').addClass('fli-nogrow fas fa-link col-1 clickable align-right').on('click', function () {
+            self.logger.log(new SimpleMessage("Votez a l'adresse suivante : <a href='" + url + "'>" + url + "</a>", {html: true}))
+        }),
         $('<H3>').addClass('fli-nogrow fas fa-eye col-1 clickable align-right').on('click', function () {
             if (!once) {
                 self.list_vote.run({

@@ -15,6 +15,7 @@ use handler\connexion\RegisterHandler;
 use handler\meeting\AddSlotHandler;
 use handler\meeting\CreateMeetingHandler;
 use handler\meeting\DeleteMeetingHandler;
+use handler\meeting\VoteHandler;
 
 class PostForwarder extends Forwarder
 {
@@ -76,5 +77,14 @@ class PostForwarder extends Forwarder
         $this->assertHasKey(AddSlotHandler::MEETING);
         $meeting = $this->secureGet(AddSlotHandler::MEETING);
         $handler->run($meeting, $this->loginHandler->getUser());
+    }
+
+    public function visitVoteHandler(VoteHandler $handler)
+    {
+        $this->assertHasKey(VoteHandler::NAME, VoteHandler::SLOT);
+        $name = $this->secureGet(VoteHandler::NAME);
+        $slot = $this->secureGet(VoteHandler::SLOT);
+
+        $handler->run($name,$slot);
     }
 }

@@ -17,8 +17,18 @@ class VoteHandler extends GenericPDOHandler
 {
     use DefaultRanAndSucceed;
 
+    const NAME = 'name';
+    const SLOT = 'slot';
+
     public function accept(HandlerVisitor $visitor)
     {
         $visitor->visitVoteHandler($this);
+    }
+
+    public function run($name, $slot)
+    {
+        $this->setRan();
+        $this->wrapper->run("INSERT INTO MEETING_SLOT_VOTE (meeting_slot_id, name) VALUES (?,?)", [$slot, $name]);
+        $this->setSuccess();
     }
 }

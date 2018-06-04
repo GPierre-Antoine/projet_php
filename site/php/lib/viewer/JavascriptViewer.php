@@ -86,6 +86,7 @@ class JavascriptViewer extends Viewer
             js_dir.'/activity/CreateMeetingActivity.js',
             js_dir.'/activity/RouteActivity.js',
             js_dir.'/activity/ListMeetingActivity.js',
+            js_dir.'/activity/VoteActivity.js',
             js_dir.'/printer/Printer.js',
             js_dir.'/printer/RoutePrinter.js',
             js_dir.'/printer/MeetingPrinter.js',

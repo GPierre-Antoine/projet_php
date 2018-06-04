@@ -79,7 +79,7 @@
     "abstract": "Chose which meeting time fits you the most",
     "url": "/vote",
     "groups": [
-      0
+      0, 1
     ],
     "handler": "vote_slot",
     "data": [

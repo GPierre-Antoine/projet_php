@@ -19,6 +19,7 @@ use handler\meeting\CheckMeetingVotesHandler;
 use handler\meeting\CreateMeetingHandler;
 use handler\meeting\DeleteMeetingHandler;
 use handler\meeting\ListMeetingHandler;
+use handler\meeting\VoteHandler;
 use handler\meta\RouteHandler;
 use util\info\Feedback;
 
@@ -85,7 +86,12 @@ class JsonViewer extends Viewer
 
     public function visitCheckMeetingVotesHandler(CheckMeetingVotesHandler $handler)
     {
-        echo json_encode(new Feedback($handler->succeeded(),$handler->getMeeting()));
+        echo json_encode(new Feedback($handler->succeeded(), $handler->getMeeting()));
     }
 
+
+    public function visitVoteHandler(VoteHandler $handler)
+    {
+        $this->viewBinaryHandler($handler);
+    }
 }
