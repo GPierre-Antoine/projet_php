@@ -5,7 +5,6 @@ function RegisterActivity(logger, thread, route_register, loginactivity) {
     this.location.addClass('container');
     this.route_register = route_register;
     this.loginactivity = loginactivity;
-    this.print();
 }
 
 RegisterActivity.prototype = Object.create(Activity.prototype);

@@ -21,7 +21,6 @@ class Vote implements \JsonSerializable
         $this->name = $name;
     }
 
-
     public function jsonSerialize()
     {
         return ['id' => $this->id, 'name' => $this->name];

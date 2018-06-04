@@ -18,7 +18,7 @@ MeetingPrinter.prototype.print = function (data) {
     let self = this;
     let viewer;
     let once = false;
-    let url = '/localhost/vote/' + data.id;
+    let url = '/vote/' + data.id;
     let element = $('<DIV>').addClass('col-12 alert border-divider').append($('<DIV>').addClass('flo flo-row').append(
         $('<H3>').text(data.name),
         $('<H3>').addClass('fli-nogrow fas fa-link col-1 clickable align-right').on('click', function () {
@@ -100,9 +100,10 @@ ExtendedMeetingPrinter.prototype.print = function (meeting) {
 
 
     function print_slot(hour, slot) {
+        console.log(slot);
         let x = $('<DIV>').text(hour + 'h');
         let votes = slot.getVotes();
-        let k = $('<DIV>').append($('<SPAN>').text('Votants : ' + votes.length));
+        let k = $('<DIV>').addClass('flo flo-col').append($('<SPAN>').text('Votants : ' + votes.length));
         for (let i = 0; i < votes.length; ++i) {
             k.append($('<SPAN>').text(votes[i].name))
         }

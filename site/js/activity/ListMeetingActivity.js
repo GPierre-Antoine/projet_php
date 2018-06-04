@@ -6,7 +6,6 @@ function ListMeetingActivity(logger, eventhread, list_meeting_route, list_vote, 
     this.list_vote = list_vote;
     this.delete_meeting = delete_meeting;
     this.location.addClass('container');
-    this.print();
 }
 
 ListMeetingActivity.prototype = Object.create(Activity.prototype);

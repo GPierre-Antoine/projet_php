@@ -63,6 +63,8 @@ MeetingApp.prototype.start = function (data) {
             list_meeting_click.click();
         });
 
+        this.toggleActivities();
+
     } catch (e) {
         this.logger.log(ExceptionMessage.prototype.fromError(e))
     }

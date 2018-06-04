@@ -5,7 +5,6 @@ function CreateMeetingActivity(logger, thread, route_create_meeting, route_add_s
     this.location.addClass('container');
     this.create_meeting = route_create_meeting;
     this.add_slot = route_add_slot_to_survey;
-    this.print();
 }
 
 CreateMeetingActivity.prototype = Object.create(Activity.prototype);
@@ -148,8 +147,8 @@ CreateMeetingActivity.prototype.print = function () {
                                 if (counter_total === whole.length) {
                                     if (counter === counter_total) {
                                         self.logger.log(new SimpleMessage("Sondage créé"));
-                                        let url = "/localhost/vote/" + feedback.data.id;
-                                        self.logger.log(new SimpleMessage("Pour voter sur le sondage, suivez le lien suivant : <a href='"+url+"'>"+url+"</a>", {html: true}));
+                                        let url = "/vote/" + feedback.data.id;
+                                        self.logger.log(new SimpleMessage("Pour voter sur le sondage, suivez le lien suivant : <a href='" + url + "'>" + url + "</a>", {html: true}));
                                         let ev = events.survey_created;
                                         ev.flag = feedback.data.id;
                                         thread.fire(ev);

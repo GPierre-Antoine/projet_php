@@ -5,7 +5,6 @@ function RouteActivity(logger, thread, routes, printer, group) {
     this.routes = routes;
     this.printer = printer;
     this.group = group;
-    this.print();
 }
 
 RouteActivity.prototype = Object.create(Activity.prototype);

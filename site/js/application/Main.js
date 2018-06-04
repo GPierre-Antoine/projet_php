@@ -30,7 +30,7 @@ function Main() {
     body.append(fragment).addClass('flo flo-col');
     let self = this;
     let fix_height = function () {
-        let level = (bottom_layer.outerHeight() - 5)+'px';
+        let level = (bottom_layer.outerHeight() - 5) + 'px';
         self.section.css('margin-bottom', level);
         alerts.css('margin-bottom', level);
         self.section.height('auto');
@@ -52,7 +52,13 @@ function Main() {
 Main.prototype.toggleActivities = function () {
     for (let i = 0; i < this.activities.length; ++i) {
         let activity = this.activities[i];
-        activity.getTag().toggle(activity.checkGroup(this.current_group));
+        if (activity.checkGroup(this.current_group)) {
+            activity.getTag().toggle(true);
+            activity.reprint();
+        }
+        else {
+            activity.getTag().toggle(false);
+        }
     }
 };
 
@@ -73,7 +79,6 @@ Main.prototype.addActivity = function (activity) {
     );
 
     activity.bindTag(item);
-    item.toggle(activity.checkGroup(this.current_group));
     return item;
 };
 

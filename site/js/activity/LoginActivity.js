@@ -5,7 +5,6 @@ function LoginActivity(logger, thread, route_login) {
     this.route_login = route_login;
     this.location.addClass('container');
     this.register_link = undefined;
-    this.print();
 }
 
 LoginActivity.prototype = Object.create(Activity.prototype);

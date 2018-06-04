@@ -5,7 +5,6 @@ function LogoutActivity(logger, thread, route_logout) {
     Activity.call(this, logger, thread, [1]);
     this.route_logout = route_logout;
     this.location.addClass('container');
-    this.print();
 }
 
 LogoutActivity.prototype = Object.create(Activity.prototype);

@@ -81,7 +81,7 @@ function SlotFactory() {
 SlotFactory.prototype = Object.create(Factory.prototype);
 SlotFactory.prototype.constructor = SlotFactory;
 SlotFactory.prototype.make = function (data) {
-    let slot = new Slot(data.id, new Date(data.time*1000));
+    let slot = new Slot(data.id, new Date(data.time * 1000));
     for (let i = 0; i < data.votes.length; ++i) {
         slot.addVote(this.vote_factory.make(data.votes[i]));
     }

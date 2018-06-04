@@ -4,7 +4,7 @@
     "abstract": "List my meeting surveys",
     "url": "/list_surveys",
     "groups": [
-      1
+      0,1
     ],
     "handler": "list_meeting",
     "data": [],
@@ -28,7 +28,7 @@
     "abstract": "Check the votes for a meeting",
     "url": "/list_votes",
     "groups": [
-      1
+      0,1
     ],
     "handler": "check_meeting_full",
     "data": ["meeting"],
@@ -84,7 +84,7 @@
     "handler": "vote_slot",
     "data": [
       "name",
-      "meeting"
+      "slot"
     ],
     "type": "POST"
   },

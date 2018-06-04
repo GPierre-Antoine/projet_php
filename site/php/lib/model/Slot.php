@@ -33,7 +33,7 @@ class Slot implements \JsonSerializable
      */
     public function addVotes(Vote $votes)
     {
-        $this->votes = $votes;
+        $this->votes[] = $votes;
     }
 
     public function jsonSerialize()
