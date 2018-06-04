@@ -12,6 +12,9 @@ namespace model;
 class Slot implements \JsonSerializable
 {
     private $id;
+    /**
+     * @var \DateTime
+     */
     private $date;
     private $interval;
     private $votes;
@@ -35,6 +38,6 @@ class Slot implements \JsonSerializable
 
     public function jsonSerialize()
     {
-        return ['id' => $this->id, 'date' => $this->date, 'votes' => $this->votes];
+        return ['id' => $this->id, 'time' => $this->date->getTimestamp(), 'votes' => $this->votes];
     }
 }

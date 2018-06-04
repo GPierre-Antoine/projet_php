@@ -12,18 +12,33 @@ function Meeting(id, user, name) {
     this.id = id;
     this.user = user;
     this.name = name;
+    this.slots = [];
 }
 
-function Slot(id, meeting, time, interval) {
+Meeting.prototype.addSlot = function (slot) {
+    this.slots.push(slot);
+};
+
+Meeting.prototype.getSlots = function () {
+    return this.slots;
+};
+
+function Slot(id, time) {
     this.id = id;
-    this.meeting = meeting;
     this.time = time;
-    this.interval = interval;
+    this.votes = [];
 }
 
-function Vote(id, slot, name) {
+Slot.prototype.getVotes = function () {
+    return this.votes;
+};
+
+Slot.prototype.addVote = function (vote) {
+    this.votes.push(vote);
+};
+
+function Vote(id, name) {
     this.id = id;
-    this.slot = slot;
     this.name = name;
 }
 
@@ -34,7 +49,7 @@ function Type(id, name) {
     this.input = undefined;
 }
 
-Type.prototype.setName = function(new_name){
+Type.prototype.setName = function (new_name) {
     this.name = new_name;
 };
 

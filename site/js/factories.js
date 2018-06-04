@@ -61,13 +61,46 @@ RouteFactory.prototype.make = function (id, data) {
 };
 
 
+function VoteFactory() {
+    Factory.call(this);
+}
+
+VoteFactory.prototype = Object.create(Factory.prototype);
+VoteFactory.prototype.constructor = VoteFactory;
+
+VoteFactory.prototype.make = function (data) {
+    return new Vote(data.id, data.name)
+};
+
+
+function SlotFactory() {
+    Factory.call(this);
+    this.vote_factory = new VoteFactory();
+}
+
+SlotFactory.prototype = Object.create(Factory.prototype);
+SlotFactory.prototype.constructor = SlotFactory;
+SlotFactory.prototype.make = function (data) {
+    let slot = new Slot(data.id, new Date(data.time*1000));
+    for (let i = 0; i < data.votes.length; ++i) {
+        slot.addVote(this.vote_factory.make(data.votes[i]));
+    }
+    return slot;
+};
+
 function MeetingFactory() {
     Factory.call(this);
+    this.slot_factory = new SlotFactory();
 }
 
 MeetingFactory.prototype = Object.create(Factory.prototype);
 MeetingFactory.prototype.constructor = MeetingFactory;
 
 MeetingFactory.prototype.make = function (data) {
-    return new Meeting(data.id, data.user, data.name);
+    let m = new Meeting(data.id, data.user, data.name);
+    if (typeof data.slots !== "undefined")
+        for (let i = 0; i < data.slots.length; ++i) {
+            m.addSlot(this.slot_factory.make(data.slots[i]));
+        }
+    return m;
 };
