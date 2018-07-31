@@ -151,7 +151,7 @@ function application_meetings(
         });
 
         if (!count($adequate_viewers)) {
-            throw new RuntimeException("Bad request");
+            throw new RuntimeException("Unknown Mime type in HttpAccept header");
         }
         /** @var Viewer $viewer */
         $viewer = $adequate_viewers->first();
