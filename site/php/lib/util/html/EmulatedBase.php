@@ -18,7 +18,7 @@ class EmulatedBase extends Base
         $this->string = $string;
     }
 
-    public function __toString()
+    public function __toString(): string
     {
         return $this->string;
     }
