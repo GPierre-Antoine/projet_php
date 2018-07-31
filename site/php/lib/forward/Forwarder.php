@@ -11,7 +11,7 @@ namespace forward;
 
 use container\Collection;
 use handler\connexion\LoginHandler;
-use handler\connexion\LogoutRequestHandler;
+use handler\connexion\LogoutHandler;
 use handler\connexion\RegisterHandler;
 use handler\FakeRequestHandler;
 use handler\RequestHandler;
@@ -24,7 +24,7 @@ use handler\meeting\DeleteMeetingHandler;
 use handler\meeting\ListMeetingHandler;
 use handler\meeting\ListSlotHandler;
 use handler\meeting\VoteHandler;
-use handler\meta\RouteRequestHandler;
+use handler\meta\RouteHandler;
 
 class Forwarder implements HandlerVisitor
 {
@@ -80,7 +80,7 @@ class Forwarder implements HandlerVisitor
         $handler->accept($this);
     }
 
-    public function visitLogout(LogoutRequestHandler $handler)
+    public function visitLogout(LogoutHandler $handler)
     {
         $this->makeException();
     }
@@ -90,7 +90,7 @@ class Forwarder implements HandlerVisitor
         $this->makeException();
     }
 
-    public function visitRouteHandler(RouteRequestHandler $handler)
+    public function visitRouteHandler(RouteHandler $handler)
     {
         $this->makeException();
     }

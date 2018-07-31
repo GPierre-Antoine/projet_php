@@ -15,7 +15,7 @@ use handler\HandlerVisitor;
 use util\cache\CacheIoManager;
 use util\client\PersistentStore;
 
-class LogoutRequestHandler implements RequestHandler
+class LogoutHandler implements RequestHandler
 {
     use DefaultRanAndSucceed;
     private $clientStore;

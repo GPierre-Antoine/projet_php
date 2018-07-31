@@ -14,7 +14,7 @@ use handler\FakeRequestHandler;
 use handler\meeting\CheckMeetingVotesHandler;
 use handler\meeting\ListMeetingHandler;
 use handler\meeting\ListSlotHandler;
-use handler\meta\RouteRequestHandler;
+use handler\meta\RouteHandler;
 
 class GetForwarder extends Forwarder
 {
@@ -31,7 +31,7 @@ class GetForwarder extends Forwarder
         $handler->run();
     }
 
-    public function visitRouteHandler(RouteRequestHandler $handler)
+    public function visitRouteHandler(RouteHandler $handler)
     {
         $handler->run();
     }

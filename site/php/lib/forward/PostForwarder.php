@@ -10,7 +10,7 @@ namespace forward;
 
 use container\Collection;
 use handler\connexion\LoginHandler;
-use handler\connexion\LogoutRequestHandler;
+use handler\connexion\LogoutHandler;
 use handler\connexion\RegisterHandler;
 use handler\meeting\AddSlotHandler;
 use handler\meeting\CreateMeetingHandler;
@@ -52,7 +52,7 @@ class PostForwarder extends Forwarder
         $handler->run($login, $password, $firstname, $lastname);
     }
 
-    public function visitLogout(LogoutRequestHandler $handler)
+    public function visitLogout(LogoutHandler $handler)
     {
         $handler->run();
     }

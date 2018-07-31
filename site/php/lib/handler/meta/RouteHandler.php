@@ -14,7 +14,7 @@ use handler\DefaultRanAndSucceed;
 use handler\RequestHandler;
 use handler\HandlerVisitor;
 
-class RouteRequestHandler implements RequestHandler
+class RouteHandler implements RequestHandler
 {
     use DefaultRanAndSucceed;
 

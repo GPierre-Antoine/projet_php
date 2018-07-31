@@ -10,7 +10,7 @@ namespace handler;
 
 
 use handler\connexion\LoginHandler;
-use handler\connexion\LogoutRequestHandler;
+use handler\connexion\LogoutHandler;
 use handler\connexion\RegisterHandler;
 use handler\meeting\AddSlotHandler;
 use handler\meeting\CheckMeetingVotesHandler;
@@ -19,7 +19,7 @@ use handler\meeting\DeleteMeetingHandler;
 use handler\meeting\ListMeetingHandler;
 use handler\meeting\ListSlotHandler;
 use handler\meeting\VoteHandler;
-use handler\meta\RouteRequestHandler;
+use handler\meta\RouteHandler;
 
 interface HandlerVisitor
 {
@@ -27,11 +27,11 @@ interface HandlerVisitor
 
     public function visitRegister(RegisterHandler $handler);
 
-    public function visitLogout(LogoutRequestHandler $handler);
+    public function visitLogout(LogoutHandler $handler);
 
     public function visitFakeHandler(FakeRequestHandler $handler);
 
-    public function visitRouteHandler(RouteRequestHandler $handler);
+    public function visitRouteHandler(RouteHandler $handler);
 
     public function visitListMeeting(ListMeetingHandler $handler);
 
