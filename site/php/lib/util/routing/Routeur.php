@@ -12,7 +12,7 @@ namespace util\routing;
 use container\AutoHashCollection;
 use container\Collection;
 use handler\connexion\LoginHandler;
-use handler\connexion\LogoutRequestHandler;
+use handler\connexion\LogoutHandler;
 use handler\connexion\RegisterHandler;
 use handler\RequestHandler;
 use handler\meeting\AddSlotHandler;
@@ -22,7 +22,7 @@ use handler\meeting\DeleteMeetingHandler;
 use handler\meeting\ListMeetingHandler;
 use handler\meeting\ListSlotHandler;
 use handler\meeting\VoteHandler;
-use handler\meta\RouteRequestHandler;
+use handler\meta\RouteHandler;
 
 class Routeur
 {
@@ -43,7 +43,7 @@ class Routeur
         $this->cache = $cache;
         $this->encryptionManager = $encryptionManager;
         $this->loginHandler = new LoginHandler($db, $store, $cache, $encryptionManager);
-        $this->routeHandler = new RouteRequestHandler();
+        $this->routeHandler = new RouteHandler();
         $this->map = $map;
         $this->handlers_map = $handlers_map;
     }
@@ -88,7 +88,7 @@ class Routeur
         $handlers[] = new CreateMeetingHandler($this->db);
         $handlers[] = new DeleteMeetingHandler($this->db);
         $handlers[] = new CheckMeetingVotesHandler($this->db);
-        $handlers[] = new LogoutRequestHandler($this->store, $this->cache);
+        $handlers[] = new LogoutHandler($this->store, $this->cache);
 
         return $handlers;
     }
