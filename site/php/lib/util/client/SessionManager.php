@@ -9,7 +9,7 @@
 namespace util\client;
 
 
-class SessionManager implements ClientStore
+class SessionManager implements PersistentStore
 {
     const SERVER_NAME = 'SERVER_NAME';
     const TIMEOUT = 'TIMEOUT';

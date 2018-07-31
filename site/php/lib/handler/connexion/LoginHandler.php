@@ -30,9 +30,7 @@ class LoginHandler extends GenericPDORequestHandler
 
     const MESSAGE_NO_LOGIN = "Unknown User";
     const MESSAGE_BAD_CONNEXION = "Bad Login/Password";
-    /**
-     * @var clientStore
-     */
+
     private $clientStore;
     /**
      * @var CacheIoManager
@@ -48,7 +46,7 @@ class LoginHandler extends GenericPDORequestHandler
 
     public function __construct(
         DbWrapper $wrapper,
-        ClientStore $clientStore,
+        PersistentStore $clientStore,
         CacheIoManager $cacheIoManager,
         EncryptionManager $encryptionManager
     ) {

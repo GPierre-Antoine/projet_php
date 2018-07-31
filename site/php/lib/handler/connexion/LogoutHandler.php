@@ -35,7 +35,7 @@ class LogoutHandler implements RequestHandler
     }
 
     public function __construct(
-        ClientStore $clientStore,
+        PersistentStore $clientStore,
         CacheIoManager $cacheIoManager
     ) {
         $this->clientStore = $clientStore;

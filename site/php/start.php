@@ -102,7 +102,7 @@ function resolve_group($output)
 function application_meetings(
     Settings $settings,
     CacheIoManager $cache,
-    ClientStore $store
+    PersistentStore $store
 ) {
     try {
         $db                =

@@ -11,7 +11,7 @@ namespace util\client;
 
 use container\CollectionForwarder;
 
-class CookieManager extends CollectionForwarder implements ClientStore
+class CookieManager extends CollectionForwarder implements PersistentStore
 {
     protected $secure;
     protected $default_expiration_time;
