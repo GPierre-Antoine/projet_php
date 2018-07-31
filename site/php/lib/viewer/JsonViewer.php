@@ -10,7 +10,7 @@ namespace viewer;
 
 
 use handler\connexion\LoginHandler;
-use handler\connexion\LogoutRequestHandler;
+use handler\connexion\LogoutHandler;
 use handler\connexion\RegisterHandler;
 use handler\FakeRequestHandler;
 use handler\RequestHandler;
@@ -20,7 +20,7 @@ use handler\meeting\CreateMeetingHandler;
 use handler\meeting\DeleteMeetingHandler;
 use handler\meeting\ListMeetingHandler;
 use handler\meeting\VoteHandler;
-use handler\meta\RouteRequestHandler;
+use handler\meta\RouteHandler;
 use util\info\Feedback;
 
 class JsonViewer extends Viewer
@@ -41,7 +41,7 @@ class JsonViewer extends Viewer
         $this->viewBinaryHandler($handler);
     }
 
-    public function visitLogout(LogoutRequestHandler $handler)
+    public function visitLogout(LogoutHandler $handler)
     {
         $this->viewBinaryHandler($handler);
     }
@@ -56,7 +56,7 @@ class JsonViewer extends Viewer
         return "application/json";
     }
 
-    public function visitRouteHandler(RouteRequestHandler $handler)
+    public function visitRouteHandler(RouteHandler $handler)
     {
         $feedback = new Feedback($handler->succeeded(), $handler->getRoutes());
         echo json_encode($feedback);

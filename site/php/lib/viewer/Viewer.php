@@ -10,7 +10,7 @@ namespace viewer;
 
 
 use handler\connexion\LoginHandler;
-use handler\connexion\LogoutRequestHandler;
+use handler\connexion\LogoutHandler;
 use handler\connexion\RegisterHandler;
 use handler\FakeRequestHandler;
 use handler\HandlerVisitor;
@@ -21,7 +21,7 @@ use handler\meeting\DeleteMeetingHandler;
 use handler\meeting\ListMeetingHandler;
 use handler\meeting\ListSlotHandler;
 use handler\meeting\VoteHandler;
-use handler\meta\RouteRequestHandler;
+use handler\meta\RouteHandler;
 
 abstract class Viewer implements HandlerVisitor
 {
@@ -47,7 +47,7 @@ abstract class Viewer implements HandlerVisitor
         $this->makeException();
     }
 
-    public function visitLogout(LogoutRequestHandler $handler)
+    public function visitLogout(LogoutHandler $handler)
     {
         $this->makeException();
     }
@@ -57,7 +57,7 @@ abstract class Viewer implements HandlerVisitor
         $this->makeException();
     }
 
-    public function visitRouteHandler(RouteRequestHandler $handler)
+    public function visitRouteHandler(RouteHandler $handler)
     {
         $this->makeException();
     }
