@@ -67,9 +67,9 @@ function mb_strip_from_last_index($string, $needle)
     return mb_substr($string, $last_index);
 }
 
-function get_forwarder($request_type, $loginHandler)
+function get_route_forwarder(\util\routing\HttpRequest $request, $loginHandler)
 {
-    switch ($request_type) {
+    switch ($request->getMethod()) {
         case 'POST':
             return new PostForwarder($loginHandler);
         case 'GET':
@@ -117,37 +117,31 @@ function application_meetings(
 
         $routes = $routeur->getValidRoutes();
 
-        $uri = $_SERVER['REQUEST_URI'];
+        $request = \util\routing\HttpRequest::makeServerArray($_SERVER);
 
-        if (empty($_SERVER['HTTP_ACCEPT'])) {
-            $accept = 'text/html';
-        } else {
-            $accept = explode(',', explode(';', $_SERVER['HTTP_ACCEPT'])[0])[0];
-        }
-
-        $filter = function (Route $item) use ($uri, $accept) {
-            return $item->matchesUrl(explode('?', $uri)[0]) && $item->matchesContentType($accept);
+        $filter        = function (Route $item) use ($request) {
+            return $item->matchesUrl($request->getUri()) && $item->matchesContentType($request->getExpectedMimeType());
         };
         $right_handler = $routes->filter($filter);
 
         if (!count($right_handler)) {
-            throw new RuntimeException("Unknown route : ".$uri);
+            throw new RuntimeException("Unknown route : " . $request->getUri());
         }
 
         if (count($right_handler) > 1) {
-            throw new RuntimeException("Ambiguous route : ".$uri);
+            throw new RuntimeException("Ambiguous route : " . $request->getUri());
         }
 
         /** @var Route $route */
         $route = $right_handler->first();
 
-        $forwarder = get_forwarder($_SERVER['REQUEST_METHOD'], $routeur->getLoginHandler());
+        $forwarder = get_route_forwarder($request, $routeur->getLoginHandler());
 
 
         $viewers = init_views($routeur->getLoginHandler());
 
-        $adequate_viewers = $viewers->filter(function (Viewer $v) use ($accept) {
-            return $v->getContentType() === $accept;
+        $adequate_viewers = $viewers->filter(function (Viewer $v) use ($request) {
+            return $v->getContentType() === $request->getExpectedMimeType();
         });
 
         if (!count($adequate_viewers)) {
