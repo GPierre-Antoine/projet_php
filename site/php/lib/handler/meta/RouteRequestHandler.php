@@ -11,10 +11,10 @@ namespace handler\meta;
 
 use container\Collection;
 use handler\DefaultRanAndSucceed;
-use handler\Handler;
+use handler\RequestHandler;
 use handler\HandlerVisitor;
 
-class RouteHandler implements Handler
+class RouteRequestHandler implements RequestHandler
 {
     use DefaultRanAndSucceed;
 

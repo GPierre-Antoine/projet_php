@@ -9,7 +9,7 @@
 namespace util\routing;
 
 
-use handler\Handler;
+use handler\RequestHandler;
 
 class Route implements \JsonSerializable
 {
@@ -24,32 +24,23 @@ class Route implements \JsonSerializable
 
     public function __construct($url, $groups, $data, $title, $abstract, $accepts, $type)
     {
-        $this->url = $url;
-        $this->groups = $groups;
-        $this->data = $data;
-        $this->title = $title;
+        $this->url      = $url;
+        $this->groups   = $groups;
+        $this->data     = $data;
+        $this->title    = $title;
         $this->abstract = $abstract;
-        $this->accepts = $accepts;
-        $this->type = $type;
+        $this->accepts  = $accepts;
+        $this->type     = $type;
     }
 
-    /**
-     * @return mixed
-     */
-    public function getHandler()
+    public function getRequestHandler(): RequestHandler
     {
         return $this->handler;
     }
 
-    /**
-     * @param Handler $handler
-     *
-     * @return Route
-     */
-    public function setHandler(Handler $handler)
+    public function setHandler(RequestHandler $handler): self
     {
         $this->handler = $handler;
-
         return $this;
     }
 
@@ -61,48 +52,45 @@ class Route implements \JsonSerializable
         return $this->data;
     }
 
-    public function hasGroup($int)
+    public function hasGroup($int): bool
     {
         return in_array($int, $this->groups);
     }
 
-    public function matchesUrl($url)
+    public function matchesUrl($url): bool
     {
         return preg_match("#^{$this->url}$#", $url);
     }
 
-    public function matchesContentType($accept)
+    public function matchesContentType($accept): bool
     {
-        return $this->accepts===$accept;
+        return $this->accepts === $accept;
     }
 
-    /**
-     * @return mixed
-     */
-    public function getTitle()
+    public function getTitle(): string
     {
         return $this->title;
     }
 
-    public function jsonSerialize()
+    public function jsonSerialize(): array
     {
         return [
-            'title' => $this->title,
+            'title'    => $this->title,
             'abstract' => $this->abstract,
-            'url' => $this->url,
-            'groups' => $this->groups,
-            'data' => $this->data,
-            'type' => $this->type,
-            'accepts' => $this->accepts
+            'url'      => $this->url,
+            'groups'   => $this->groups,
+            'data'     => $this->data,
+            'type'     => $this->type,
+            'accepts'  => $this->accepts,
         ];
     }
 
-    public function getContentType()
+    public function getContentType(): string
     {
         return $this->accepts;
     }
 
-    public function getUrl()
+    public function getUrl(): string
     {
         return $this->url;
     }

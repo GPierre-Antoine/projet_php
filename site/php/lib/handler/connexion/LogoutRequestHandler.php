@@ -10,12 +10,12 @@ namespace handler\connexion;
 
 
 use handler\DefaultRanAndSucceed;
-use handler\Handler;
+use handler\RequestHandler;
 use handler\HandlerVisitor;
 use util\cache\CacheIoManager;
-use util\client\ClientStore;
+use util\client\PersistentStore;
 
-class LogoutHandler implements Handler
+class LogoutRequestHandler implements RequestHandler
 {
     use DefaultRanAndSucceed;
     private $clientStore;

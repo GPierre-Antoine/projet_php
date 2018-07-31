@@ -11,13 +11,13 @@ namespace handler\meeting;
 
 use container\Collection;
 use handler\DefaultRanAndSucceed;
-use handler\GenericPDOHandler;
+use handler\GenericPDORequestHandler;
 use handler\HandlerVisitor;
 use model\Meeting;
 use model\Slot;
 use model\Vote;
 
-class CheckMeetingVotesHandler extends GenericPDOHandler
+class CheckMeetingVotesHandler extends GenericPDORequestHandler
 {
     use DefaultRanAndSucceed;
 

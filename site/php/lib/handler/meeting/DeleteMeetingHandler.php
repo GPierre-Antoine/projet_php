@@ -10,11 +10,11 @@ namespace handler\meeting;
 
 
 use handler\DefaultRanAndSucceed;
-use handler\GenericPDOHandler;
+use handler\GenericPDORequestHandler;
 use handler\HandlerVisitor;
 use model\User;
 
-class DeleteMeetingHandler extends GenericPDOHandler
+class DeleteMeetingHandler extends GenericPDORequestHandler
 {
     use DefaultRanAndSucceed;
 

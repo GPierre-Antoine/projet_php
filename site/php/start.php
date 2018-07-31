@@ -15,7 +15,7 @@ use handler\connexion\LoginHandler;
 use init\CreateDatabase;
 use init\CreateTables;
 use util\cache\CacheIoManager;
-use util\client\ClientStore;
+use util\client\PersistentStore;
 use util\DbWrapper;
 use util\encryption\AESEncryptionManager;
 use util\routing\Route;
@@ -24,9 +24,9 @@ use viewer\JavascriptViewer;
 use viewer\JsonViewer;
 use viewer\Viewer;
 
-require_once __DIR__.'/autoload.php';
+require_once __DIR__ . '/autoload.php';
 
-autoload_init_in(__DIR__.'/lib');
+autoload_init_in(__DIR__ . '/lib');
 
 /**
  * @param CacheIoManager $cache
@@ -87,9 +87,9 @@ function get_forwarder($request_type, $loginHandler)
  */
 function init_views(LoginHandler $handler)
 {
-    $views = new Collection();
+    $views               = new Collection();
     $views['javascript'] = new JavascriptViewer($handler);
-    $views['json'] = new JsonViewer();
+    $views['json']       = new JsonViewer();
 
     return $views;
 }
@@ -105,13 +105,14 @@ function application_meetings(
     ClientStore $store
 ) {
     try {
-        $db = new DbWrapper($settings->getApplicationName(), $settings->getDbHost(), $settings->getDbUser(),
-            $settings->getDbPassword());
+        $db                =
+            new DbWrapper($settings->getApplicationName(), $settings->getDbHost(), $settings->getDbUser(),
+                $settings->getDbPassword());
         $encryptionManager = new AESEncryptionManager($cache[AESEncryptionManager::KEY_TYPE]);
 
         $routeur = new \util\routing\Routeur($db, $store, $cache, $encryptionManager,
-            __DIR__.'/../json/routes.json',
-            __DIR__.'/../json/handlers_map.json'
+            __DIR__ . '/../json/routes.json',
+            __DIR__ . '/../json/handlers_map.json'
         );
 
         $routes = $routeur->getValidRoutes();
@@ -155,17 +156,20 @@ function application_meetings(
         /** @var Viewer $viewer */
         $viewer = $adequate_viewers->first();
 
-        $route->getHandler()->accept($forwarder);
+        $route->getRequestHandler()->accept($forwarder);
         $viewer->printContentType();
-        $route->getHandler()->accept($viewer);
+        $route->getRequestHandler()->accept($viewer);
 
     } catch (Exception $e) {
         header("Content-Type: text/plain");
         try {
             switch ($e->getCode()) {
                 case 1049:
-                    make_new_folder($cache, $settings->getApplicationName(), $settings->getDbHost(),
-                        $settings->getDbUser(), $settings->getDbPassword());
+                    make_new_folder($cache,
+                        $settings->getApplicationName(),
+                        $settings->getDbHost(),
+                        $settings->getDbUser(),
+                        $settings->getDbPassword());
                     break;
                 default:
                     http_response_code($e->getCode() || 500);

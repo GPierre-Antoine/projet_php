@@ -10,12 +10,12 @@ namespace handler\meeting;
 
 
 use handler\DefaultRanAndSucceed;
-use handler\GenericPDOHandler;
+use handler\GenericPDORequestHandler;
 use handler\HandlerVisitor;
 use model\Meeting;
 use model\User;
 
-class CreateMeetingHandler extends GenericPDOHandler
+class CreateMeetingHandler extends GenericPDORequestHandler
 {
     use DefaultRanAndSucceed;
 

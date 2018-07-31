@@ -10,16 +10,16 @@ namespace handler\connexion;
 
 
 use handler\DefaultRanAndSucceed;
-use handler\GenericPDOHandler;
+use handler\GenericPDORequestHandler;
 use handler\HandlerVisitor;
 use model\LoginInfo;
 use model\User;
 use util\cache\CacheIoManager;
-use util\client\ClientStore;
+use util\client\PersistentStore;
 use util\DbWrapper;
 use util\encryption\EncryptionManager;
 
-class LoginHandler extends GenericPDOHandler
+class LoginHandler extends GenericPDORequestHandler
 {
     use DefaultRanAndSucceed;
 

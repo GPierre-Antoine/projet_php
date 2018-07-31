@@ -9,7 +9,7 @@
 namespace handler;
 
 
-class FakeHandler implements Handler
+class FakeRequestHandler implements RequestHandler
 {
     use DefaultRanAndSucceed;
 

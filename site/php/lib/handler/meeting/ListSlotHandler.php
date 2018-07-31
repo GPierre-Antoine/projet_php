@@ -10,10 +10,10 @@ namespace handler\meeting;
 
 
 use handler\DefaultRanAndSucceed;
-use handler\GenericPDOHandler;
+use handler\GenericPDORequestHandler;
 use handler\HandlerVisitor;
 
-class ListSlotHandler extends GenericPDOHandler
+class ListSlotHandler extends GenericPDORequestHandler
 {
     use DefaultRanAndSucceed;
 

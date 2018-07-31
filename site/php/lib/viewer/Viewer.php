@@ -10,25 +10,24 @@ namespace viewer;
 
 
 use handler\connexion\LoginHandler;
-use handler\connexion\LogoutHandler;
+use handler\connexion\LogoutRequestHandler;
 use handler\connexion\RegisterHandler;
-use handler\FakeHandler;
+use handler\FakeRequestHandler;
 use handler\HandlerVisitor;
 use handler\meeting\AddSlotHandler;
-use handler\meeting\CheckMeetingHandler;
 use handler\meeting\CheckMeetingVotesHandler;
 use handler\meeting\CreateMeetingHandler;
 use handler\meeting\DeleteMeetingHandler;
 use handler\meeting\ListMeetingHandler;
 use handler\meeting\ListSlotHandler;
 use handler\meeting\VoteHandler;
-use handler\meta\RouteHandler;
+use handler\meta\RouteRequestHandler;
 
 abstract class Viewer implements HandlerVisitor
 {
     final public function printContentType()
     {
-        header('Content-Type:'.$this->getContentType());
+        header('Content-Type:' . $this->getContentType());
     }
 
     abstract public function getContentType();
@@ -48,17 +47,17 @@ abstract class Viewer implements HandlerVisitor
         $this->makeException();
     }
 
-    public function visitLogout(LogoutHandler $handler)
+    public function visitLogout(LogoutRequestHandler $handler)
     {
         $this->makeException();
     }
 
-    public function visitFakeHandler(FakeHandler $handler)
+    public function visitFakeHandler(FakeRequestHandler $handler)
     {
         $this->makeException();
     }
 
-    public function visitRouteHandler(RouteHandler $handler)
+    public function visitRouteHandler(RouteRequestHandler $handler)
     {
         $this->makeException();
     }
@@ -79,11 +78,6 @@ abstract class Viewer implements HandlerVisitor
     }
 
     public function visitCheckMeetingVotesHandler(CheckMeetingVotesHandler $handler)
-    {
-        $this->makeException();
-    }
-
-    public function visitCheckMeetingHandler(CheckMeetingHandler $handler)
     {
         $this->makeException();
     }

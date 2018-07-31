@@ -11,6 +11,6 @@ namespace handler;
 
 use util\hasWrapper;
 
-abstract class GenericPDOHandler extends hasWrapper implements Handler
+abstract class GenericPDORequestHandler extends hasWrapper implements RequestHandler
 {
 }

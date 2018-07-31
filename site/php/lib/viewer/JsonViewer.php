@@ -10,17 +10,17 @@ namespace viewer;
 
 
 use handler\connexion\LoginHandler;
-use handler\connexion\LogoutHandler;
+use handler\connexion\LogoutRequestHandler;
 use handler\connexion\RegisterHandler;
-use handler\FakeHandler;
-use handler\Handler;
+use handler\FakeRequestHandler;
+use handler\RequestHandler;
 use handler\meeting\AddSlotHandler;
 use handler\meeting\CheckMeetingVotesHandler;
 use handler\meeting\CreateMeetingHandler;
 use handler\meeting\DeleteMeetingHandler;
 use handler\meeting\ListMeetingHandler;
 use handler\meeting\VoteHandler;
-use handler\meta\RouteHandler;
+use handler\meta\RouteRequestHandler;
 use util\info\Feedback;
 
 class JsonViewer extends Viewer
@@ -30,7 +30,7 @@ class JsonViewer extends Viewer
         $this->viewBinaryHandler($handler);
     }
 
-    private function viewBinaryHandler(Handler $handler)
+    private function viewBinaryHandler(RequestHandler $handler)
     {
         $message = new Feedback($handler->succeeded(), $handler->succeeded() ? 'Success' : 'Failure');
         echo json_encode($message);
@@ -41,12 +41,12 @@ class JsonViewer extends Viewer
         $this->viewBinaryHandler($handler);
     }
 
-    public function visitLogout(LogoutHandler $handler)
+    public function visitLogout(LogoutRequestHandler $handler)
     {
         $this->viewBinaryHandler($handler);
     }
 
-    public function visitFakeHandler(FakeHandler $handler)
+    public function visitFakeHandler(FakeRequestHandler $handler)
     {
         $this->viewBinaryHandler($handler);
     }
@@ -56,7 +56,7 @@ class JsonViewer extends Viewer
         return "application/json";
     }
 
-    public function visitRouteHandler(RouteHandler $handler)
+    public function visitRouteHandler(RouteRequestHandler $handler)
     {
         $feedback = new Feedback($handler->succeeded(), $handler->getRoutes());
         echo json_encode($feedback);

@@ -10,7 +10,7 @@ namespace viewer;
 
 
 use handler\connexion\LoginHandler;
-use handler\meta\RouteHandler;
+use handler\meta\RouteRequestHandler;
 use util\html\Base;
 use util\html\EmulatedBase;
 use util\html\HtmlMaker;
@@ -35,7 +35,7 @@ class JavascriptViewer extends Viewer
         return "text/html";
     }
 
-    public function visitRouteHandler(RouteHandler $handler)
+    public function visitRouteHandler(RouteRequestHandler $handler)
     {
         $json = json_encode($handler->getRoutes(), JSON_PRETTY_PRINT);
         $types = file_get_contents(__DIR__.'/../../../json/types.json');

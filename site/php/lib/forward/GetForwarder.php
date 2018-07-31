@@ -10,11 +10,11 @@ namespace forward;
 
 use container\Collection;
 use handler\connexion\LoginHandler;
-use handler\FakeHandler;
+use handler\FakeRequestHandler;
 use handler\meeting\CheckMeetingVotesHandler;
 use handler\meeting\ListMeetingHandler;
 use handler\meeting\ListSlotHandler;
-use handler\meta\RouteHandler;
+use handler\meta\RouteRequestHandler;
 
 class GetForwarder extends Forwarder
 {
@@ -26,12 +26,12 @@ class GetForwarder extends Forwarder
         $this->loginHandler = $handler;
     }
 
-    public function visitFakeHandler(FakeHandler $handler)
+    public function visitFakeHandler(FakeRequestHandler $handler)
     {
         $handler->run();
     }
 
-    public function visitRouteHandler(RouteHandler $handler)
+    public function visitRouteHandler(RouteRequestHandler $handler)
     {
         $handler->run();
     }

@@ -10,11 +10,11 @@ namespace handler\connexion;
 
 
 use handler\DefaultRanAndSucceed;
-use handler\GenericPDOHandler;
+use handler\GenericPDORequestHandler;
 use handler\HandlerVisitor;
 use util\DbWrapper;
 
-class RegisterHandler extends GenericPDOHandler
+class RegisterHandler extends GenericPDORequestHandler
 {
     use DefaultRanAndSucceed;
 

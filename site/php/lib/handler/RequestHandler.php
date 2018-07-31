@@ -9,7 +9,7 @@
 namespace handler;
 
 
-interface Handler
+interface RequestHandler
 {
     public function hasBeenRan() : bool;
     public function succeeded() : bool;

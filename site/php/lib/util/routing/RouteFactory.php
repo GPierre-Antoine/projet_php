@@ -10,12 +10,12 @@ namespace util\routing;
 
 
 use container\Collection;
-use handler\Handler;
+use handler\RequestHandler;
 
 class RouteFactory
 {
     /**
-     * @var Collection|Handler[]
+     * @var Collection|RequestHandler[]
      */
     private $handlers;
 

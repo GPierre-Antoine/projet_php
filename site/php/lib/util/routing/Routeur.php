@@ -12,9 +12,9 @@ namespace util\routing;
 use container\AutoHashCollection;
 use container\Collection;
 use handler\connexion\LoginHandler;
-use handler\connexion\LogoutHandler;
+use handler\connexion\LogoutRequestHandler;
 use handler\connexion\RegisterHandler;
-use handler\Handler;
+use handler\RequestHandler;
 use handler\meeting\AddSlotHandler;
 use handler\meeting\CheckMeetingVotesHandler;
 use handler\meeting\CreateMeetingHandler;
@@ -22,7 +22,7 @@ use handler\meeting\DeleteMeetingHandler;
 use handler\meeting\ListMeetingHandler;
 use handler\meeting\ListSlotHandler;
 use handler\meeting\VoteHandler;
-use handler\meta\RouteHandler;
+use handler\meta\RouteRequestHandler;
 
 class Routeur
 {
@@ -43,7 +43,7 @@ class Routeur
         $this->cache = $cache;
         $this->encryptionManager = $encryptionManager;
         $this->loginHandler = new LoginHandler($db, $store, $cache, $encryptionManager);
-        $this->routeHandler = new RouteHandler();
+        $this->routeHandler = new RouteRequestHandler();
         $this->map = $map;
         $this->handlers_map = $handlers_map;
     }
@@ -72,7 +72,7 @@ class Routeur
     public function makeHandlers()
     {
         $keys = json_decode(file_get_contents($this->handlers_map), true);
-        $hash_f = function (Handler $h) use ($keys) {
+        $hash_f = function (RequestHandler $h) use ($keys) {
             return $keys[mb_strip_from_last_index(get_class($h), '\\')];
         };
 
@@ -88,7 +88,7 @@ class Routeur
         $handlers[] = new CreateMeetingHandler($this->db);
         $handlers[] = new DeleteMeetingHandler($this->db);
         $handlers[] = new CheckMeetingVotesHandler($this->db);
-        $handlers[] = new LogoutHandler($this->store, $this->cache);
+        $handlers[] = new LogoutRequestHandler($this->store, $this->cache);
 
         return $handlers;
     }
